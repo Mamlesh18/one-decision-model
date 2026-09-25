@@ -1,0 +1,5 @@
+# server.py runs on the Docker backend, not on Vercel (torch + model weights are far above
+# Vercel's function size limit). Ignoring it also stops Vercel auto-detecting it as a FastAPI app.
+server.py
+README.md
+__pycache__
