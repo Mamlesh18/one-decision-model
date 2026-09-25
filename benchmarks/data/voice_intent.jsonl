@@ -1,0 +1,30 @@
+{"state": "how much money do I have", "label": "check_balance"}
+{"state": "what's my balance", "label": "check_balance"}
+{"state": "balance please", "label": "check_balance"}
+{"state": "can you tell me how much is left in my savings", "label": "check_balance"}
+{"state": "do I have enough to cover rent this month", "label": "check_balance"}
+{"state": "I lost my card", "label": "block_card"}
+{"state": "my wallet got stolen with my debit card in it", "label": "block_card"}
+{"state": "freeze my card right now", "label": "block_card"}
+{"state": "I can't find my credit card anywhere", "label": "block_card"}
+{"state": "someone took my card at the station, block it", "label": "block_card"}
+{"state": "there's a payment I don't recognise", "label": "dispute_charge"}
+{"state": "I never bought anything from this shop in Dubai", "label": "dispute_charge"}
+{"state": "somebody charged 300 dollars on my account", "label": "dispute_charge"}
+{"state": "I was billed for something I didn't order", "label": "dispute_charge"}
+{"state": "what is this weird transaction from yesterday", "label": "dispute_charge"}
+{"state": "agent please", "label": "talk_to_agent"}
+{"state": "let me speak to a real person", "label": "talk_to_agent"}
+{"state": "operator", "label": "talk_to_agent"}
+{"state": "human. now.", "label": "talk_to_agent"}
+{"state": "I don't want to talk to a robot", "label": "talk_to_agent"}
+{"state": "I moved house last week", "label": "update_address"}
+{"state": "change my address please", "label": "update_address"}
+{"state": "my new flat is on Baker Street", "label": "update_address"}
+{"state": "I need to update my phone number", "label": "update_address"}
+{"state": "can you update where you send my statements", "label": "update_address"}
+{"state": "I want to pay my credit card bill", "label": "pay_bill"}
+{"state": "pay my electricity bill", "label": "pay_bill"}
+{"state": "make a payment of 200", "label": "pay_bill"}
+{"state": "settle my outstanding balance", "label": "pay_bill"}
+{"state": "I'd like to clear what I owe on the card", "label": "pay_bill"}

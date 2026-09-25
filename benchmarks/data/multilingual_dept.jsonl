@@ -1,0 +1,24 @@
+{"state": "मुझसे दो बार शुल्क लिया गया, कृपया पैसे वापस करें।", "label": "billing"}
+{"state": "ऐप खोलते ही बंद हो जाता है", "label": "technical"}
+{"state": "मेरा पार्सल अभी तक नहीं आया", "label": "delivery"}
+{"state": "Me cobraron dos veces este mes", "label": "billing"}
+{"state": "La aplicación se cierra cada vez que abro la configuración", "label": "technical"}
+{"state": "Mi paquete lleva dos semanas de retraso", "label": "delivery"}
+{"state": "Mir wurde der Betrag doppelt abgebucht", "label": "billing"}
+{"state": "Ich kann mich seit gestern nicht einloggen", "label": "technical"}
+{"state": "Mein Paket ist nie angekommen", "label": "delivery"}
+{"state": "On m'a facturé deux fois", "label": "billing"}
+{"state": "L'application plante au démarrage", "label": "technical"}
+{"state": "Mon colis n'est toujours pas arrivé", "label": "delivery"}
+{"state": "எனக்கு இரண்டு முறை பணம் பிடிக்கப்பட்டது", "label": "billing"}
+{"state": "செயலி திறக்கவே இல்லை", "label": "technical"}
+{"state": "எனது ஆர்டர் இன்னும் வரவில்லை", "label": "delivery"}
+{"state": "تم خصم المبلغ مرتين من بطاقتي", "label": "billing"}
+{"state": "التطبيق يتوقف عن العمل عند فتحه", "label": "technical"}
+{"state": "لم تصل شحنتي حتى الآن", "label": "delivery"}
+{"state": "同じ請求が二重に引き落とされました", "label": "billing"}
+{"state": "アプリがすぐに落ちます", "label": "technical"}
+{"state": "荷物がまだ届いていません", "label": "delivery"}
+{"state": "Fui cobrado duas vezes", "label": "billing"}
+{"state": "O aplicativo trava ao abrir", "label": "technical"}
+{"state": "Minha encomenda não chegou", "label": "delivery"}

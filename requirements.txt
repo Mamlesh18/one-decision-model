@@ -1,0 +1,5 @@
+# Laya (pulls in torch, transformers, huggingface_hub). For a CPU-only or specific CUDA torch
+# build, install torch first following pytorch.org, then this file.
+laya[serve]==0.3.20
+pydantic>=2        # optional: router.decide(text, schema=PydanticModel). The laya[structured] extra is not in 0.3.20
+pytest>=8
