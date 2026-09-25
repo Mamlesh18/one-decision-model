@@ -20,17 +20,17 @@ QA = {
 
 CALLS = [
     [
-        {"speaker": "agent", "text": "Thanks for calling Acme, this is Priya. How can I help?"},
-        {"speaker": "customer", "text": "My internet has been down since morning."},
-        {"speaker": "agent", "text": "I'm sorry, that's frustrating. Can you confirm your date of birth?"},
-        {"speaker": "customer", "text": "12 March 1990."},
-        {"speaker": "agent", "text": "Thanks. I've reset your line, can you check now?"},
-        {"speaker": "customer", "text": "Yes it works, thank you!"},
+        {"role": "agent", "content": "Thanks for calling Acme, this is Priya. How can I help?"},
+        {"role": "customer", "content": "My internet has been down since morning."},
+        {"role": "agent", "content": "I'm sorry, that's frustrating. Can you confirm your date of birth?"},
+        {"role": "customer", "content": "12 March 1990."},
+        {"role": "agent", "content": "Thanks. I've reset your line, can you check now?"},
+        {"role": "customer", "content": "Yes it works, thank you!"},
     ],
     [
-        {"speaker": "agent", "text": "Yeah?"},
-        {"speaker": "customer", "text": "I want to know why my bill for account 5521 doubled."},
-        {"speaker": "agent", "text": "Don't know. You'll definitely get a full refund tomorrow, bye."},
+        {"role": "agent", "content": "Yeah?"},
+        {"role": "customer", "content": "I want to know why my bill for account 5521 doubled."},
+        {"role": "agent", "content": "Don't know. You'll definitely get a full refund tomorrow, bye."},
     ],
 ]
 

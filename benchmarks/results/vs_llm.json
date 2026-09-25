@@ -1,0 +1,167 @@
+{
+  "date": "2026-09-25T12:36:11",
+  "llm": "azure:gpt-4.1-mini",
+  "price_per_m": [
+    0.4,
+    1.6
+  ],
+  "laya_device": "cpu",
+  "torch_threads": 4,
+  "results": [
+    {
+      "task": "voice_intent",
+      "rows": 30,
+      "repeats": 10,
+      "routed_model": "auto",
+      "laya": {
+        "accuracy": 0.9333333333333333,
+        "calls": 300,
+        "consistency": 1.0,
+        "p50_ms": 718.9483499823837,
+        "p95_ms": 796.7133999918588,
+        "mean_ms": 715.9933139986242,
+        "max_ms": 1031.0891999979503
+      },
+      "llm": {
+        "accuracy": 0.94,
+        "calls": 300,
+        "consistency": 0.9333333333333333,
+        "p50_ms": 1085.7328999991296,
+        "p95_ms": 3251.9832999969367,
+        "mean_ms": 1342.7151478720698,
+        "max_ms": 9266.099700005725,
+        "tokens_in": 33308,
+        "tokens_out": 664,
+        "avg_tokens_in": 111.02666666666667,
+        "cost_usd": 0.0143856,
+        "cost_per_1k_usd": 0.047951999999999995,
+        "retries_429": 0,
+        "errors": 18
+      }
+    },
+    {
+      "task": "turn_complete",
+      "rows": 24,
+      "repeats": 10,
+      "routed_model": "english",
+      "laya": {
+        "accuracy": 0.5,
+        "calls": 240,
+        "consistency": 1.0,
+        "p50_ms": 850.8585000090534,
+        "p95_ms": 1122.1274000126868,
+        "mean_ms": 858.749429583501,
+        "max_ms": 2624.3742000078782
+      },
+      "llm": {
+        "accuracy": 0.9416666666666667,
+        "calls": 240,
+        "consistency": 0.9583333333333334,
+        "p50_ms": 976.8090500001563,
+        "p95_ms": 1280.6999000022188,
+        "mean_ms": 1007.6363804177769,
+        "max_ms": 1762.762099999236,
+        "tokens_in": 32420,
+        "tokens_out": 240,
+        "avg_tokens_in": 135.08333333333334,
+        "cost_usd": 0.013352000000000001,
+        "cost_per_1k_usd": 0.05563333333333333,
+        "retries_429": 0,
+        "errors": 0
+      }
+    },
+    {
+      "task": "interruption",
+      "rows": 25,
+      "repeats": 10,
+      "routed_model": "english",
+      "laya": {
+        "accuracy": 0.24,
+        "calls": 250,
+        "consistency": 1.0,
+        "p50_ms": 1119.8730500036618,
+        "p95_ms": 1538.0198000057135,
+        "mean_ms": 1146.916391201201,
+        "max_ms": 3205.191300017759
+      },
+      "llm": {
+        "accuracy": 0.968,
+        "calls": 250,
+        "consistency": 0.96,
+        "p50_ms": 1035.3454500000225,
+        "p95_ms": 1394.6566999948118,
+        "mean_ms": 1077.3836271998007,
+        "max_ms": 2865.175500017358,
+        "tokens_in": 43380,
+        "tokens_out": 500,
+        "avg_tokens_in": 173.52,
+        "cost_usd": 0.018152,
+        "cost_per_1k_usd": 0.072608,
+        "retries_429": 0,
+        "errors": 0
+      }
+    },
+    {
+      "task": "confirmation",
+      "rows": 24,
+      "repeats": 10,
+      "routed_model": "english",
+      "laya": {
+        "accuracy": 0.3333333333333333,
+        "calls": 240,
+        "consistency": 1.0,
+        "p50_ms": 722.3933000204852,
+        "p95_ms": 1317.6368999993429,
+        "mean_ms": 789.4075883334153,
+        "max_ms": 3359.213199990336
+      },
+      "llm": {
+        "accuracy": 1.0,
+        "calls": 240,
+        "consistency": 1.0,
+        "p50_ms": 996.2813500023913,
+        "p95_ms": 1349.4880000071134,
+        "mean_ms": 1061.7369908336211,
+        "max_ms": 9793.263300001854,
+        "tokens_in": 29570,
+        "tokens_out": 240,
+        "avg_tokens_in": 123.20833333333333,
+        "cost_usd": 0.012212,
+        "cost_per_1k_usd": 0.050883333333333336,
+        "retries_429": 0,
+        "errors": 0
+      }
+    },
+    {
+      "task": "multilingual_dept",
+      "rows": 24,
+      "repeats": 10,
+      "routed_model": "auto",
+      "laya": {
+        "accuracy": 0.875,
+        "calls": 240,
+        "consistency": 1.0,
+        "p50_ms": 143.30680000421125,
+        "p95_ms": 569.4855999900028,
+        "mean_ms": 203.20446458244987,
+        "max_ms": 1869.747799995821
+      },
+      "llm": {
+        "accuracy": 1.0,
+        "calls": 240,
+        "consistency": 1.0,
+        "p50_ms": 976.2151500035543,
+        "p95_ms": 1384.9093999888282,
+        "mean_ms": 1028.2764879157185,
+        "max_ms": 1959.0363999886904,
+        "tokens_in": 20740,
+        "tokens_out": 240,
+        "avg_tokens_in": 86.41666666666667,
+        "cost_usd": 0.008680000000000002,
+        "cost_per_1k_usd": 0.03616666666666667,
+        "retries_429": 0,
+        "errors": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+device=cpu torch=2.14.0+cpu threads=4
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 805.57it/s]
+
+### english  (load 32.7 s)
+case                                 p50 ms   p95 ms
+A  1 question(s), short               494.8    660.7
+A  5 question(s), short              2228.0   2344.5
+A  10 question(s), short             4565.3   6956.4
+B  short turn                         479.6    572.5
+B  ~400 words                        3988.7   4741.5
+C  batch_size=1, 64 items               2.3 items/s
+C  batch_size=8, 64 items               2.8 items/s
+C  batch_size=32, 64 items              2.9 items/s
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 1023.65it/s]

@@ -1,0 +1,34 @@
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 284.04it/s]
+  voice_intent: row 1/30  voice_intent: row 2/30  voice_intent: row 3/30  voice_intent: row 4/30  voice_intent: row 5/30  voice_intent: row 6/30  voice_intent: row 7/30  voice_intent: row 8/30  voice_intent: row 9/30  voice_intent: row 10/30  voice_intent: row 11/30  voice_intent: row 12/30  voice_intent: row 13/30  voice_intent: row 14/30  voice_intent: row 15/30  voice_intent: row 16/30  voice_intent: row 17/30  voice_intent: row 18/30  voice_intent: row 19/30  voice_intent: row 20/30  voice_intent: row 21/30  voice_intent: row 22/30  voice_intent: row 23/30  voice_intent: row 24/30  voice_intent: row 25/30  voice_intent: row 26/30  voice_intent: row 27/30  voice_intent: row 28/30  voice_intent: row 29/30  voice_intent: row 30/30
+
+=== voice_intent  rows=30 x repeats=10  (laya checkpoint: auto)
+system                     accuracy consist.   p50 ms   p95 ms   max ms  $/1k calls
+laya (CPU, local)             0.933     1.00      719      797     1031 0 (self-host)
+azure:gpt-4.1-mini            0.940     0.93     1086     3252     9266      0.0480
+  turn_complete: row 1/24  turn_complete: row 2/24  turn_complete: row 3/24  turn_complete: row 4/24  turn_complete: row 5/24  turn_complete: row 6/24  turn_complete: row 7/24  turn_complete: row 8/24  turn_complete: row 9/24  turn_complete: row 10/24  turn_complete: row 11/24  turn_complete: row 12/24  turn_complete: row 13/24  turn_complete: row 14/24  turn_complete: row 15/24  turn_complete: row 16/24  turn_complete: row 17/24  turn_complete: row 18/24  turn_complete: row 19/24  turn_complete: row 20/24  turn_complete: row 21/24  turn_complete: row 22/24  turn_complete: row 23/24  turn_complete: row 24/24
+
+=== turn_complete  rows=24 x repeats=10  (laya checkpoint: english)
+system                     accuracy consist.   p50 ms   p95 ms   max ms  $/1k calls
+laya (CPU, local)             0.500     1.00      851     1122     2624 0 (self-host)
+azure:gpt-4.1-mini            0.942     0.96      977     1281     1763      0.0556
+  interruption: row 1/25  interruption: row 2/25  interruption: row 3/25  interruption: row 4/25  interruption: row 5/25  interruption: row 6/25  interruption: row 7/25  interruption: row 8/25  interruption: row 9/25  interruption: row 10/25  interruption: row 11/25  interruption: row 12/25  interruption: row 13/25  interruption: row 14/25  interruption: row 15/25  interruption: row 16/25  interruption: row 17/25  interruption: row 18/25  interruption: row 19/25  interruption: row 20/25  interruption: row 21/25  interruption: row 22/25  interruption: row 23/25  interruption: row 24/25  interruption: row 25/25
+
+=== interruption  rows=25 x repeats=10  (laya checkpoint: english)
+system                     accuracy consist.   p50 ms   p95 ms   max ms  $/1k calls
+laya (CPU, local)             0.240     1.00     1120     1538     3205 0 (self-host)
+azure:gpt-4.1-mini            0.968     0.96     1035     1395     2865      0.0726
+  confirmation: row 1/24  confirmation: row 2/24  confirmation: row 3/24  confirmation: row 4/24  confirmation: row 5/24  confirmation: row 6/24  confirmation: row 7/24  confirmation: row 8/24  confirmation: row 9/24  confirmation: row 10/24  confirmation: row 11/24  confirmation: row 12/24  confirmation: row 13/24  confirmation: row 14/24  confirmation: row 15/24  confirmation: row 16/24  confirmation: row 17/24  confirmation: row 18/24  confirmation: row 19/24  confirmation: row 20/24  confirmation: row 21/24  confirmation: row 22/24  confirmation: row 23/24  confirmation: row 24/24
+
+=== confirmation  rows=24 x repeats=10  (laya checkpoint: english)
+system                     accuracy consist.   p50 ms   p95 ms   max ms  $/1k calls
+laya (CPU, local)             0.333     1.00      722     1318     3359 0 (self-host)
+azure:gpt-4.1-mini            1.000     1.00      996     1349     9793      0.0509
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files:  20%|██        | 1/5 [00:01<00:04,  1.04s/it]Fetching 5 files:  80%|████████  | 4/5 [00:06<00:01,  1.68s/it]Fetching 5 files: 100%|██████████| 5/5 [01:26<00:00, 23.58s/it]Fetching 5 files: 100%|██████████| 5/5 [01:26<00:00, 17.37s/it]
+  multilingual_dept: row 1/24  multilingual_dept: row 2/24  multilingual_dept: row 3/24  multilingual_dept: row 4/24  multilingual_dept: row 5/24  multilingual_dept: row 6/24  multilingual_dept: row 7/24  multilingual_dept: row 8/24  multilingual_dept: row 9/24  multilingual_dept: row 10/24  multilingual_dept: row 11/24  multilingual_dept: row 12/24  multilingual_dept: row 13/24  multilingual_dept: row 14/24  multilingual_dept: row 15/24  multilingual_dept: row 16/24  multilingual_dept: row 17/24  multilingual_dept: row 18/24  multilingual_dept: row 19/24  multilingual_dept: row 20/24  multilingual_dept: row 21/24  multilingual_dept: row 22/24  multilingual_dept: row 23/24  multilingual_dept: row 24/24
+
+=== multilingual_dept  rows=24 x repeats=10  (laya checkpoint: auto)
+system                     accuracy consist.   p50 ms   p95 ms   max ms  $/1k calls
+laya (CPU, local)             0.875     1.00      143      569     1870 0 (self-host)
+azure:gpt-4.1-mini            1.000     1.00      976     1385     1959      0.0362
+
+saved C:\Users\Lap1578\Documents\iNextLabs\RD\dream-layer\one-decision-model\benchmarks\results\vs_llm.json

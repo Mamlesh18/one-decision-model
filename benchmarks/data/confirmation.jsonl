@@ -1,24 +1,24 @@
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "yeah go ahead"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "yep"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "sure"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "yes please"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "sounds good"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "do it"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "perfect, book it"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "okay"}], "label": "A"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "nah"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "no"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "no, don't book it"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "not now thanks"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "I'd rather not"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "cancel that"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "no I don't want it"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "please don't"}], "label": "B"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "hmm let me check my calendar"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "what's the address again?"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "maybe"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "I'm not sure"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "how long will it take?"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "can I think about it"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "who is the doctor?"}], "label": "D"}
-{"state": [{"speaker": "assistant", "text": "Shall I book the appointment for Thursday at 3pm?"}, {"speaker": "user", "text": "wait what day is Thursday"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "yeah go ahead"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "yep"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "sure"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "yes please"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "sounds good"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "do it"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "perfect, book it"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "okay"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "nah"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "no"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "no, don't book it"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "not now thanks"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "I'd rather not"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "cancel that"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "no I don't want it"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "please don't"}], "label": "B"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "hmm let me check my calendar"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "what's the address again?"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "maybe"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "I'm not sure"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "how long will it take?"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "can I think about it"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "who is the doctor?"}], "label": "D"}
+{"state": [{"role": "assistant", "content": "Shall I book the appointment for Thursday at 3pm?"}, {"role": "user", "content": "wait what day is Thursday"}], "label": "D"}

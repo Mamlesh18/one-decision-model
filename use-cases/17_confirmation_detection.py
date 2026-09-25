@@ -32,7 +32,7 @@ REPLIES = ["yeah go ahead", "yep", "nah", "no, don't book it", "hmm let me check
 if __name__ == "__main__":
     router = get_router()
     for reply in REPLIES:
-        state = [{"speaker": "assistant", "text": BOT}, {"speaker": "user", "text": reply}]
+        state = [{"role": "assistant", "content": BOT}, {"role": "user", "content": reply}]
         a = router.predict(state, CONFIRM_Q, model="english")["answers"]["reply"]
         label = MEANING[a["choice"]] if a["answer_confidence"] >= 0.55 else "UNCLEAR (re-ask)"
         print(f"{reply:<35} -> {label:<22} conf={a['answer_confidence']:.2f}")

@@ -55,8 +55,8 @@ def test_route_returns_reason(r):
 
 
 def test_conversation_list_state_routes(r):
-    state = [{"speaker": "assistant", "text": "How can I help?"},
-             {"speaker": "caller", "text": "मेरा कार्ड खो गया"}]
+    state = [{"role": "assistant", "content": "How can I help?"},
+             {"role": "caller", "content": "मेरा कार्ड खो गया"}]
     assert r.route(state).model == "multilingual"
 
 

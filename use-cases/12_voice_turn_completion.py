@@ -67,10 +67,10 @@ class TurnVerdict:
 if __name__ == "__main__":
     router = get_router()
     verdict = TurnVerdict()
-    history = [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}]
+    history = [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}]
     print(f"{'partial transcript':<60} P(done)  wait   latency")
     for text in PARTIALS:
-        state = history + [{"speaker": "caller", "text": text}]
+        state = history + [{"role": "caller", "content": text}]
         t0 = time.perf_counter()
         r = router.predict(state, TURN_QUESTIONS, model="english")
         ms = (time.perf_counter() - t0) * 1000

@@ -16,9 +16,22 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
 import time
 from functools import lru_cache
 from typing import Any, Dict, Iterable, Optional
+
+
+def load_env(path: Optional[str] = None) -> None:
+    """Load KEY=VALUE lines from the repo's .env into os.environ (existing variables win)."""
+    env = pathlib.Path(path) if path else pathlib.Path(__file__).resolve().parent / ".env"
+    if not env.exists():
+        return
+    for line in env.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 
 @lru_cache(maxsize=1)

@@ -27,12 +27,12 @@ CONTEXT_Q = {
 }
 
 CALL = [
-    {"speaker": "assistant", "text": "Hi, how can I help?"},
-    {"speaker": "caller", "text": "My parcel was supposed to arrive Monday and it's still not here."},
-    {"speaker": "assistant", "text": "Sorry about that. Can I have your order number?"},
-    {"speaker": "caller", "text": "It's 7 7 1 2 0. And honestly this is the second time this happens."},
-    {"speaker": "assistant", "text": "Thanks. It shows delivered yesterday at 6pm."},
-    {"speaker": "caller", "text": "That's wrong, nothing was delivered! Just get me a real person."},
+    {"role": "assistant", "content": "Hi, how can I help?"},
+    {"role": "caller", "content": "My parcel was supposed to arrive Monday and it's still not here."},
+    {"role": "assistant", "content": "Sorry about that. Can I have your order number?"},
+    {"role": "caller", "content": "It's 7 7 1 2 0. And honestly this is the second time this happens."},
+    {"role": "assistant", "content": "Thanks. It shows delivered yesterday at 6pm."},
+    {"role": "caller", "content": "That's wrong, nothing was delivered! Just get me a real person."},
 ]
 
 CONFIDENT = 0.70
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     router = get_router()
     for i in range(1, len(CALL), 2):   # after each caller turn
         history = CALL[: i + 1]
-        print(f"\n--- after caller: {history[-1]['text']}")
+        print(f"\n--- after caller: {history[-1]['content']}")
         r = router.predict(history, CONTEXT_Q)
         show(r)
         a = r["answers"]

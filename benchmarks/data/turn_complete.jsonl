@@ -1,24 +1,24 @@
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I want to change my delivery address to 42 Baker Street"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "can you tell me my balance please"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "my internet is not working since this morning"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I'd like to cancel my subscription"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "yes"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "no thanks"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "what time do you close today?"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "the order number is 55120"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I was charged twice for March, I want a refund"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "that's all, thank you"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "book me for Thursday at 3pm"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "my name is Priya Raman"}], "label": true}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I want to"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I want to change my"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I want to change my delivery address to"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "my card number is 4 5 3 2"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "so the thing is"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "can you tell me"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "the order number is 5 5"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I was charged twice for"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "well I was thinking maybe"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "my name is"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "and also"}], "label": false}
-{"state": [{"speaker": "assistant", "text": "Hi, this is Acme support. How can I help you today?"}, {"speaker": "caller", "text": "I'd like to book for Thursday at"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I want to change my delivery address to 42 Baker Street"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "can you tell me my balance please"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "my internet is not working since this morning"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I'd like to cancel my subscription"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "yes"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "no thanks"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "what time do you close today?"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "the order number is 55120"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I was charged twice for March, I want a refund"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "that's all, thank you"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "book me for Thursday at 3pm"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "my name is Priya Raman"}], "label": true}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I want to"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I want to change my"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I want to change my delivery address to"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "my card number is 4 5 3 2"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "so the thing is"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "can you tell me"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "the order number is 5 5"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I was charged twice for"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "well I was thinking maybe"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "my name is"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "and also"}], "label": false}
+{"state": [{"role": "assistant", "content": "Hi, this is Acme support. How can I help you today?"}, {"role": "caller", "content": "I'd like to book for Thursday at"}], "label": false}

@@ -28,7 +28,7 @@ TURN = {"t": {"type": "noul", "instructions": "Has the caller finished their tho
 
 
 def _turn(router, text):
-    state = [{"speaker": "assistant", "text": "How can I help?"}, {"speaker": "caller", "text": text}]
+    state = [{"role": "assistant", "content": "How can I help?"}, {"role": "caller", "content": text}]
     return router.predict(state, TURN, model="english")["answers"]["t"]["noul"]
 
 
@@ -43,9 +43,23 @@ BARGE = {"k": {"type": "choice", "instructions": "The assistant was speaking whe
 
 @pytest.mark.parametrize("text,label", [("uh-huh", "backchannel"), ("no no, that's wrong", "objection")])
 def test_barge_in(router, text, label):
-    state = [{"speaker": "assistant (speaking)", "text": "Your refund of 49 dollars is on its way and"},
-             {"speaker": "caller", "text": text}]
+    state = [{"role": "assistant (speaking)", "content": "Your refund of 49 dollars is on its way and"},
+             {"role": "caller", "content": text}]
     assert router.predict(state, BARGE, model="english")["answers"]["k"]["choice"] == label
+
+
+def test_speaker_key_blinds_english_checkpoint(router):
+    """Found here, not documented upstream: a turn keyed "speaker" gets uniform output on english.
+
+    If this starts failing, a newer checkpoint fixed it and speaker/text turns become usable.
+    """
+    q = {"c": {"type": "choice", "instructions": "What does the caller want?",
+               "criteria": {"refund": "money back", "address": "change address", "agent": "talk to a human"}}}
+    text = "I want a refund for my order"
+    blind = router.predict([{"speaker": "caller", "text": text}], q, model="english")["answers"]["c"]
+    ok = router.predict([{"role": "caller", "content": text}], q, model="english")["answers"]["c"]
+    assert max(blind["probabilities"].values()) < 0.40      # ~uniform: text ignored
+    assert ok["choice"] == "refund" and ok["answer_confidence"] > 0.8
 
 
 @pytest.mark.xfail(reason="Known limit (#377): negated requests can still pick the action label", strict=False)

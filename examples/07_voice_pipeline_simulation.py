@@ -35,7 +35,7 @@ latest = {"seq": 0, "p": None, "at": 0.0}
 
 async def score(seq, text, history):
     loop = asyncio.get_running_loop()
-    state = history + [{"speaker": "caller", "text": text}]
+    state = history + [{"role": "caller", "content": text}]
     t0 = time.perf_counter()
     try:
         r = await asyncio.wait_for(
@@ -53,7 +53,7 @@ async def score(seq, text, history):
 
 async def main():
     get_router().predict("warm up", TURN_Q, model="english")   # load the model before the call starts
-    history = [{"speaker": "assistant", "text": "Hello, how can I help you?"}]
+    history = [{"role": "assistant", "content": "Hello, how can I help you?"}]
     start = time.monotonic()
     tasks = []
     for seq, (t, text) in enumerate(STREAM, 1):

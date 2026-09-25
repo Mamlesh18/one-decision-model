@@ -33,7 +33,7 @@ JSONL, one row per line:
 
 ```json
 {"state": "I lost my card", "label": "block_card"}
-{"state": [{"speaker": "assistant", "text": "Shall I book it?"}, {"speaker": "user", "text": "yep"}], "label": "A"}
+{"state": [{"role": "assistant", "content": "Shall I book it?"}, {"role": "user", "content": "yep"}], "label": "A"}
 {"state": {"subject": "Invoice", "body": "..."}, "label": true}
 ```
 

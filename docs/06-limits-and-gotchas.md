@@ -18,6 +18,7 @@ Most of these come from the project's own "Honest limits" section. The last one 
 | 12 | **`act_probability` carries no signal** (#185) | Ignore it; use `answer_confidence` |
 | 13 | **CPU latency is 0.2-0.5 s** | Use a GPU for real-time voice, or keep it to off-critical-path decisions on CPU |
 | 14 | **English context is only 512 tokens** (about 320 for state) | Send long documents to `multilingual` with `max_len=8192`; keep chat history short |
+| 16 | **Found in our tests: the English checkpoint ignores conversation turns keyed `"speaker"`.** `[{"speaker": "caller", "text": "I want a refund"}]` returns uniform probabilities (33/33/33, P(yes) = 0.500) whatever the text. `role`/`content`, `who`, plain strings, a flattened string, or the multilingual checkpoint all work | Send turns as `{"role": ..., "content": ...}`. Pinned by `tests/test_behaviour_sanity.py::test_speaker_key_blinds_english_checkpoint` |
 | 15 | **Found in our tests: on PyPI 0.3.20, `lang_guess="C.UTF-8"` routes English text to multilingual.** The upstream README says it abstains, but that fix is only on `main` | Don't pass `$LANG` straight through as `lang_guess` on 0.3.20 (Docker images set `C.UTF-8`). See `tests/test_routing_offline.py` |
 
 ## Published benchmark numbers: how to read them

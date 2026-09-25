@@ -47,8 +47,8 @@ CALLER_SAYS = [
 if __name__ == "__main__":
     router = get_router()
     for said in CALLER_SAYS:
-        state = [{"speaker": "assistant (speaking, interrupted)", "text": BOT_SAYING},
-                 {"speaker": "caller", "text": said}]
+        state = [{"role": "assistant (speaking, interrupted)", "content": BOT_SAYING},
+                 {"role": "caller", "content": said}]
         t0 = time.perf_counter()
         a = router.predict(state, INTERRUPT_Q, model="english")["answers"]["kind"]
         ms = (time.perf_counter() - t0) * 1000

@@ -21,7 +21,7 @@ result = router.predict(state, questions)
 `state` can be:
 * a string: `"I was charged twice"`
 * a dict: `{"subject": "...", "body": "..."}`
-* a list of turns: `[{"speaker": "assistant", "text": "..."}, {"speaker": "caller", "text": "..."}]`
+* a list of turns: `[{"role": "assistant", "content": "..."}, {"role": "caller", "content": "..."}]`
 
 ## Question formats
 
