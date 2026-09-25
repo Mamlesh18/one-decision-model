@@ -1,0 +1,2 @@
+# Backend image only (torch is installed separately from the CPU index in the Dockerfile)
+laya[serve]==0.3.20
