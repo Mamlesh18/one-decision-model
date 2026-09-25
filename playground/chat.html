@@ -101,6 +101,46 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
 .typing { color: var(--muted); font-size: 14px; }
 .typing::after { content: "…"; animation: blink 1s infinite; } @keyframes blink { 50% { opacity: .2; } }
 
+/* ---------- top line + edit drawer ---------- */
+.topline { width: 100%; display: flex; align-items: center; gap: 10px; }
+.scen-name { flex: 1; font-weight: 600; font-size: 14px; }
+.scen-name .edited { font-size: 11px; font-weight: 600; color: var(--orange); background: var(--orange-soft); border-radius: 99px; padding: 1px 8px; margin-left: 6px; }
+.edit-btn { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; }
+.edit-btn:hover { background: var(--bubble); }
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 20; }
+.scrim.open { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100vw); background: var(--bg); border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(0,0,0,.12); transform: translateX(100%); transition: transform .22s ease; z-index: 21; display: flex; flex-direction: column; }
+.drawer.open { transform: none; }
+.drawer-head { display: flex; align-items: flex-start; gap: 10px; padding: 16px 18px 10px; border-bottom: 1px solid var(--border); }
+.drawer-head > div { flex: 1; }
+.drawer-title { font-size: 17px; font-weight: 700; }
+.drawer-sub { font-size: 12px; color: var(--muted); }
+.x { border: none; background: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 2px 6px; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 14px; }
+.drawer-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--border); }
+.drawer-foot .saved { flex: 1; font-size: 12px; color: var(--green); text-align: right; }
+.done { border: none; background: var(--text); color: var(--bg); border-radius: 8px; padding: 8px 18px; cursor: pointer; font: inherit; font-weight: 600; }
+.sec { border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+.sec.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.sec-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sec-head .what { font-size: 12px; color: var(--muted); }
+.fl { font-size: 12px; font-weight: 600; color: var(--muted); margin: 8px 0 4px; display: block; }
+.fl:first-of-type { margin-top: 0; }
+.drawer input[type=text] { font-size: 14px; padding: 8px 10px; }
+.opt-row { display: grid; grid-template-columns: 130px 1fr 28px; gap: 6px; margin-bottom: 6px; align-items: center; }
+.lvl-row { display: grid; grid-template-columns: 22px 1fr 28px; gap: 6px; margin-bottom: 6px; align-items: center; }
+.lvl-row .n { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; }
+.yn-row { display: grid; grid-template-columns: 58px 1fr; gap: 6px; margin-bottom: 6px; align-items: center; font-size: 13px; font-weight: 600; }
+.yn-row .yes { color: var(--green); } .yn-row .no { color: var(--red); }
+.rm { border: none; background: none; color: var(--muted); cursor: pointer; font-size: 15px; border-radius: 6px; height: 28px; }
+.rm:hover { color: var(--red); background: var(--red-soft); }
+.add { border: 1px dashed var(--border); background: none; color: var(--accent); border-radius: 8px; padding: 6px; width: 100%; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; }
+.add:hover { background: var(--accent-soft); }
+.warn { font-size: 12px; color: var(--red); margin-top: 4px; }
+.tip { font-size: 12px; color: var(--muted); margin-top: 4px; }
+@media (max-width: 560px) { .opt-row { grid-template-columns: 1fr 28px; } .opt-row input:nth-child(2) { grid-column: 1; } }
+
 .composer { padding: 10px 16px 16px; }
 .composer .box { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; border: 1px solid var(--border);
   border-radius: 24px; padding: 8px 8px 8px 16px; background: var(--bg); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
@@ -128,18 +168,6 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
       <option value="multilingual">Multilingual (100+ languages)</option>
       <option value="typed-decisions">Typed-decisions (fine-tuned)</option>
     </select>
-    <details style="margin-top:10px">
-      <summary>Customize this scenario's question</summary>
-      <label class="small">Question Laya answers</label>
-      <input type="text" id="editInstr">
-      <label class="small" id="editLabel">Options</label>
-      <textarea id="editOpts"></textarea>
-      <label class="small" id="ctxLabel">Bot's previous line (context, optional)</label>
-      <input type="text" id="editCtx" placeholder="empty = just your message">
-      <div style="margin-top:6px; display:flex; gap:10px">
-        <button class="link" id="resetBtn">Reset to default</button>
-      </div>
-    </details>
     <label class="small" style="margin-top:10px">Server</label>
     <input type="text" id="apiUrl" style="font-family:var(--mono); font-size:12px">
     <div class="status" id="status" style="margin-top:6px">checking…</div>
@@ -152,6 +180,10 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
 
 <main>
   <div class="topbar">
+    <div class="topline">
+      <span class="scen-name" id="scenName"></span>
+      <button class="edit-btn" id="editBtn" title="Edit this scenario's questions">✎ Edit questions</button>
+    </div>
     <div class="types" id="types">
       <button data-t="choice">Choice</button>
       <button data-t="score">Score</button>
@@ -171,6 +203,24 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
     <div class="note">Laya doesn't write replies. It <b>decides</b>: it picks an answer from the options you define and says how sure it is. Enter to send, Shift+Enter for a new line.</div>
   </div>
 </main>
+
+<!-- ============ edit drawer ============ -->
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer" role="dialog" aria-label="Edit questions">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title" id="drawerTitle">Edit questions</div>
+      <div class="drawer-sub">Changes apply straight away and are saved in this browser.</div>
+    </div>
+    <button class="x" id="closeDrawer" title="Close">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="link" id="resetBtn">↺ Reset this scenario to default</button>
+    <span class="saved" id="savedNote"></span>
+    <button class="done" id="doneBtn">Done</button>
+  </div>
+</div>
 
 <script>
 "use strict";
@@ -261,8 +311,8 @@ function apiBase() { return $("apiUrl").value.replace(/\/+$/, ""); }
 // ======================================================================= building the Laya request
 function questionFor(type) {
   const c = cfg(type);
-  if (type === "choice") return { type, instructions: c.q, criteria: Object.fromEntries(c.opts.map(([k, d]) => [k, d || k])) };
-  if (type === "score") return { type, instructions: c.q, criteria: c.levels };
+  if (type === "choice") return { type, instructions: c.q, criteria: Object.fromEntries(c.opts.filter(([k]) => k.trim()).map(([k, d]) => [k.trim(), d.trim() || k.trim()])) };
+  if (type === "score") return { type, instructions: c.q, criteria: c.levels.map(l => l.trim()).filter(Boolean) };
   const q = { type, instructions: c.q };
   const crit = {};
   if (c.f) crit.false = c.f;
@@ -344,6 +394,13 @@ function welcome() {
 async function send() {
   const text = $("input").value.trim();
   if (!text || busy) return;
+  const bad = (qtype === "all" ? ["choice", "score", "noul"] : [qtype])
+    .map(t => [t, problems(t, cfg(t))]).filter(([, p]) => p);
+  if (bad.length) {
+    const w = $("thread").querySelector(".welcome"); if (w) w.remove();
+    $("thread").append(el("div", { class: "err", text: bad.map(([t, p]) => `${TYPE_INFO[t].name}: ${p}`).join("\n") + "\nFix it with ✎ Edit questions (top right)." }));
+    scroll(); return;
+  }
   busy = true; $("send").disabled = true;
   $("input").value = ""; autosize();
   const thread = $("thread");
@@ -386,13 +443,13 @@ function renderScenarios() {
 function selectScenario(s) {
   scenario = s;
   $("model").value = s.model;
-  renderScenarios(); renderExplain(); fillEditor(); welcome();
+  renderScenarios(); renderExplain(); renderTopline(); welcome();
   store.set("last", { scenario: s.id, qtype });
 }
 function selectType(t) {
   qtype = t;
   document.querySelectorAll("#types button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
-  renderExplain(); fillEditor();
+  renderExplain();
   store.set("last", { scenario: scenario.id, qtype });
 }
 function renderExplain() {
@@ -402,32 +459,112 @@ function renderExplain() {
   if (qtype !== "all") box.append(el("br"), el("span", { class: "q", text: "Laya will answer: “" + cfg(qtype).q + "”" }));
 }
 
-// editor: edit the current scenario's question for the selected type
-function editorType() { return qtype === "all" ? "choice" : qtype; }
-function fillEditor() {
-  const t = editorType(), c = cfg(t);
-  $("editInstr").value = c.q;
-  $("editCtx").value = ctx();
-  if (t === "choice") { $("editLabel").textContent = "Options: one per line as key: description"; $("editOpts").value = c.opts.map(([k, d]) => `${k}: ${d}`).join("\n"); }
-  else if (t === "score") { $("editLabel").textContent = "Levels: one per line, lowest first"; $("editOpts").value = c.levels.join("\n"); }
-  else { $("editLabel").textContent = "What YES and NO mean (optional)"; $("editOpts").value = `yes: ${c.t || ""}\nno: ${c.f || ""}`; }
+// ======================================================================= edit drawer
+// The drawer edits a working copy of the scenario (draft) and writes it to `overrides` on every change.
+let draft = null;
+let savedTimer = null;
+
+function isEdited() { return !!overrides[scenario.id]; }
+function renderTopline() {
+  $("scenName").replaceChildren(document.createTextNode(scenario.name));
+  if (isEdited()) $("scenName").append(el("span", { class: "edited", text: "edited" }));
 }
-function saveEditor() {
-  const t = editorType();
-  const o = overrides[scenario.id] = overrides[scenario.id] || {};
-  const c = clone(cfg(t));
-  c.q = $("editInstr").value;
-  const lines = $("editOpts").value.split("\n").map(l => l.trim()).filter(Boolean);
-  if (t === "choice") c.opts = lines.map(l => { const i = l.indexOf(":"); return i > 0 ? [l.slice(0, i).trim(), l.slice(i + 1).trim()] : [l, ""]; });
-  else if (t === "score") c.levels = lines;
-  else {
-    c.t = ""; c.f = "";
-    lines.forEach(l => { const m = l.match(/^(yes|true|no|false)\s*:\s*(.*)$/i); if (m) { if (/^(yes|true)$/i.test(m[1])) c.t = m[2]; else c.f = m[2]; } });
-  }
-  o[t] = c;
-  o.context = $("editCtx").value;
+function openDrawer() {
+  draft = { context: ctx(), choice: clone(cfg("choice")), score: clone(cfg("score")), noul: clone(cfg("noul")) };
+  $("drawerTitle").textContent = "Edit: " + scenario.name;
+  $("savedNote").textContent = "";
+  renderDrawer();
+  $("drawer").classList.add("open"); $("scrim").classList.add("open");
+  const first = document.querySelector(".sec.active input"); if (first) first.focus();
+}
+function closeDrawer() { $("drawer").classList.remove("open"); $("scrim").classList.remove("open"); $("input").focus(); }
+
+function commit() {
+  overrides[scenario.id] = clone(draft);
   store.set("overrides", overrides);
-  renderExplain();
+  renderExplain(); renderTopline(); renderWarnings();
+  $("savedNote").textContent = "✓ saved";
+  clearTimeout(savedTimer); savedTimer = setTimeout(() => { $("savedNote").textContent = ""; }, 1200);
+}
+function textInput(value, placeholder, onInput) {
+  const i = el("input", { type: "text", placeholder });
+  i.value = value || "";
+  i.addEventListener("input", () => { onInput(i.value); commit(); });
+  return i;
+}
+function section(type, what, ...body) {
+  const active = qtype === type || qtype === "all";
+  return el("div", { class: "sec" + (active ? " active" : "") },
+    el("div", { class: "sec-head" }, el("span", { class: `pill p-${type}`, text: TYPE_INFO[type].name }), el("span", { class: "what", text: what })),
+    ...body);
+}
+
+function renderDrawer() {
+  const body = $("drawerBody");
+  body.replaceChildren();
+
+  // bot's previous line
+  body.append(el("div", { class: "sec" },
+    el("label", { class: "fl", text: "Bot's previous line (optional)" }),
+    textInput(draft.context, "e.g. Shall I book it for Thursday? (leave empty for none)", v => { draft.context = v; }),
+    el("div", { class: "tip", text: "Sent together with your message, so Laya knows what the user is replying to." })));
+
+  // choice
+  const ch = draft.choice;
+  const optBox = el("div");
+  ch.opts.forEach((o, i) => optBox.append(el("div", { class: "opt-row" },
+    textInput(o[0], "option name", v => { o[0] = v.trim(); }),
+    textInput(o[1], "what it means", v => { o[1] = v; }),
+    el("button", { class: "rm", title: "Remove", text: "✕", onclick: () => { ch.opts.splice(i, 1); commit(); renderDrawer(); } }))));
+  body.append(section("choice", "Laya picks ONE of these options",
+    el("label", { class: "fl", text: "Question" }),
+    textInput(ch.q, "e.g. Which department should handle this?", v => { ch.q = v; }),
+    el("label", { class: "fl", text: "Options" }), optBox,
+    el("button", { class: "add", text: "+ Add option", onclick: () => { ch.opts.push(["", ""]); commit(); renderDrawer(); focusLast(".opt-row"); } }),
+    el("div", { class: "warn", id: "warn-choice" }),
+    el("div", { class: "tip", text: "Describe every option. Add an 'other' or 'unclear' option so Laya isn't forced to guess. Avoid yes/no as option names." })));
+
+  // score
+  const sc = draft.score;
+  const lvlBox = el("div");
+  sc.levels.forEach((lv, i) => lvlBox.append(el("div", { class: "lvl-row" },
+    el("span", { class: "n", text: String(i) }),
+    textInput(lv, "level description", v => { sc.levels[i] = v; }),
+    el("button", { class: "rm", title: "Remove", text: "✕", onclick: () => { sc.levels.splice(i, 1); commit(); renderDrawer(); } }))));
+  body.append(section("score", "Laya places the message on this scale",
+    el("label", { class: "fl", text: "Question" }),
+    textInput(sc.q, "e.g. How urgent is this?", v => { sc.q = v; }),
+    el("label", { class: "fl", text: "Levels: lowest first (0 = lowest)" }), lvlBox,
+    el("button", { class: "add", text: "+ Add level", onclick: () => { sc.levels.push(""); commit(); renderDrawer(); focusLast(".lvl-row"); } }),
+    el("div", { class: "warn", id: "warn-score" })));
+
+  // yes / no
+  const yn = draft.noul;
+  body.append(section("noul", "Laya answers YES or NO, with a probability",
+    el("label", { class: "fl", text: "Question (ask it so YES / NO makes sense)" }),
+    textInput(yn.q, "e.g. Does the customer want to cancel?", v => { yn.q = v; }),
+    el("label", { class: "fl", text: "What YES and NO mean (optional)" }),
+    el("div", { class: "yn-row" }, el("span", { class: "yes", text: "YES =" }), textInput(yn.t, "e.g. says they will cancel or leave", v => { yn.t = v; })),
+    el("div", { class: "yn-row" }, el("span", { class: "no", text: "NO =" }), textInput(yn.f, "e.g. just a question, no threat to leave", v => { yn.f = v; })),
+    el("div", { class: "tip", text: "Filling these in can help or hurt. Try with and without, and keep whichever gives better answers." }),
+    el("div", { class: "warn", id: "warn-noul" })));
+  renderWarnings();
+}
+function focusLast(sel) { const rows = document.querySelectorAll(sel); const r = rows[rows.length - 1]; if (r) r.querySelector("input").focus(); }
+
+function problems(type, c) {
+  if (!c.q.trim()) return "The question is empty.";
+  if (type === "choice") {
+    const keys = c.opts.map(o => o[0].trim()).filter(Boolean);
+    if (keys.length < 2) return "Add at least 2 options with a name.";
+    if (new Set(keys).size !== keys.length) return "Two options have the same name.";
+  }
+  if (type === "score" && c.levels.filter(l => l.trim()).length < 2) return "Add at least 2 levels.";
+  return "";
+}
+function renderWarnings() {
+  if (!draft || !$("warn-choice")) return;
+  for (const t of ["choice", "score", "noul"]) $("warn-" + t).textContent = problems(t, draft[t]);
 }
 
 async function checkHealth() {
@@ -459,8 +596,16 @@ function autosize() { const i = $("input"); i.style.height = "auto"; i.style.hei
   $("send").onclick = send;
   $("input").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
   $("input").addEventListener("input", autosize);
-  for (const id of ["editInstr", "editOpts", "editCtx"]) $(id).addEventListener("input", saveEditor);
-  $("resetBtn").onclick = () => { delete overrides[scenario.id]; store.set("overrides", overrides); fillEditor(); renderExplain(); };
+  $("editBtn").onclick = openDrawer;
+  $("closeDrawer").onclick = closeDrawer;
+  $("doneBtn").onclick = closeDrawer;
+  $("scrim").onclick = closeDrawer;
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && $("drawer").classList.contains("open")) closeDrawer(); });
+  $("resetBtn").onclick = () => {
+    delete overrides[scenario.id]; store.set("overrides", overrides);
+    renderExplain(); renderTopline(); openDrawer(); $("savedNote").textContent = "↺ back to default";
+  };
+  renderTopline();
   $("apiUrl").addEventListener("change", () => { store.set("api", $("apiUrl").value); checkHealth(); });
   $("themeBtn").onclick = () => {
     const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
