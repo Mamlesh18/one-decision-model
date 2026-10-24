@@ -16,13 +16,15 @@ Browser --> Vercel (chat.html, index.html, api/proxy.js) --> Docker backend (ser
 
 1. Create a Space at https://huggingface.co/new-space. Pick SDK **Docker** and hardware **CPU basic** (free: 2 vCPU, 16 GB RAM).
 2. In the Space: **Settings → Variables and secrets → New secret**: `LAYA_PLAYGROUND_KEY` = a long random string.
+   For the Laya vs Jev vs Azure comparison, also add the secrets `JEV_API_KEY`, `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_KEY`
+   and `AZURE_OPENAI_DEPLOYMENT` (e.g. `gpt-4.1-mini`). They're optional; missing engines are greyed out in the chat page.
 3. Push the backend files (PowerShell, from the repo root):
 
 ```powershell
 git clone https://huggingface.co/spaces/<your-hf-user>/laya-playground ..\laya-space
 Copy-Item Dockerfile, requirements-server.txt, .dockerignore, shared.py ..\laya-space\
 New-Item -ItemType Directory -Force ..\laya-space\playground | Out-Null
-Copy-Item playground\server.py, playground\index.html, playground\chat.html ..\laya-space\playground\
+Copy-Item playground\server.py, playground\engines.py, playground\index.html, playground\chat.html ..\laya-space\playground\
 Copy-Item deploy\hf-space-README.md ..\laya-space\README.md
 cd ..\laya-space
 git add . ; git commit -m "Laya playground backend" ; git push

@@ -7,109 +7,180 @@
 <style>
 :root {
   --bg: #ffffff; --side: #f7f7f8; --text: #1f2328; --muted: #6b7280; --border: #e5e7eb;
-  --bubble: #f3f4f6; --accent: #10a37f; --accent-soft: #e7f6f2; --blue: #3b5bdb; --blue-soft: #e7ecff;
-  --orange: #c05600; --orange-soft: #fff0e0; --green: #2b8a3e; --green-soft: #e6f4ea; --red: #c92a2a; --red-soft: #fde8e8;
+  --bubble: #f3f4f6; --accent: #10a37f; --accent-soft: #e7f6f2;
+  --blue: #3b5bdb; --blue-soft: #e7ecff; --orange: #c05600; --orange-soft: #fff0e0;
+  --green: #2b8a3e; --green-soft: #e6f4ea; --red: #c92a2a; --red-soft: #fde8e8;
   --track: #e9ecef; --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  /* engine identity: validated categorical slots 1-3 (blue, orange, aqua) */
+  --e-laya: #2a78d6; --e-jev: #eb6834; --e-azure: #1baf7a; --surface-1: #fcfcfb;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #212121; --side: #171717; --text: #ececec; --muted: #9ca3af; --border: #333; --bubble: #2f2f2f;
     --accent: #19c37d; --accent-soft: #1d3a2f; --blue: #91a7ff; --blue-soft: #232b47; --orange: #ffa94d; --orange-soft: #3a2a17;
     --green: #69db7c; --green-soft: #1c3324; --red: #ff8787; --red-soft: #3d2020; --track: #3a3a3a;
+    --e-laya: #3987e5; --e-jev: #d95926; --e-azure: #199e70; --surface-1: #1a1a19;
   }
 }
 :root[data-theme="dark"] {
   --bg: #212121; --side: #171717; --text: #ececec; --muted: #9ca3af; --border: #333; --bubble: #2f2f2f;
   --accent: #19c37d; --accent-soft: #1d3a2f; --blue: #91a7ff; --blue-soft: #232b47; --orange: #ffa94d; --orange-soft: #3a2a17;
   --green: #69db7c; --green-soft: #1c3324; --red: #ff8787; --red-soft: #3d2020; --track: #3a3a3a;
+  --e-laya: #3987e5; --e-jev: #d95926; --e-azure: #199e70; --surface-1: #1a1a19;
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  display: grid; grid-template-columns: 300px 1fr; }
-@media (max-width: 820px) { body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } aside { max-height: 45vh; } }
+  display: grid; grid-template-columns: 290px 1fr; }
+@media (max-width: 860px) { body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } aside { max-height: 42vh; } }
+button { font: inherit; }
 
 /* ---------- sidebar ---------- */
-aside { background: var(--side); border-right: 1px solid var(--border); padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }
+aside { background: var(--side); border-right: 1px solid var(--border); padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; }
 .brand .dot { width: 26px; height: 26px; border-radius: 7px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 14px; }
 .brand .spacer { flex: 1; }
+.newchat { width: 100%; border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 10px; padding: 9px 12px;
+  cursor: pointer; font-weight: 600; text-align: left; }
+.newchat:hover { background: var(--bubble); }
 .side-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
 .scenarios { display: flex; flex-direction: column; gap: 2px; }
-.scenarios button { text-align: left; border: none; background: none; color: var(--text); padding: 8px 10px; border-radius: 8px; cursor: pointer; font: inherit; font-size: 14px; }
-.scenarios button:hover { background: var(--bubble); }
-.scenarios button.on { background: var(--bubble); font-weight: 600; }
-.scenarios button small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; }
-select, input[type=text], textarea { width: 100%; font: inherit; font-size: 13px; color: var(--text); background: var(--bg);
+.scen { display: flex; align-items: center; border-radius: 8px; }
+.scen:hover, .scen.on { background: var(--bubble); }
+.scen button.pick { flex: 1; text-align: left; border: none; background: none; color: var(--text); padding: 7px 10px; cursor: pointer; font-size: 14px; min-width: 0; }
+.scen.on button.pick { font-weight: 600; }
+.scen button.pick small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scen .del { border: none; background: none; color: var(--muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; visibility: hidden; }
+.scen:hover .del { visibility: visible; } .scen .del:hover { color: var(--red); background: var(--red-soft); }
+.empty-note { font-size: 12px; color: var(--muted); padding: 2px 10px; }
+select, input[type=text] { width: 100%; font: inherit; font-size: 13px; color: var(--text); background: var(--bg);
   border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; }
-textarea { font-family: var(--mono); font-size: 12px; min-height: 110px; resize: vertical; }
-details summary { cursor: pointer; font-size: 13px; color: var(--muted); }
 .small { font-size: 12px; color: var(--muted); margin: 6px 0 3px; display: block; }
-.link { background: none; border: none; color: var(--accent); cursor: pointer; font: inherit; font-size: 12px; padding: 0; }
+.link { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 12px; padding: 0; }
 .status { font-size: 12px; color: var(--muted); }
 .status.ok::before { content: "● "; color: var(--green); } .status.bad::before { content: "● "; color: var(--red); }
 #themeBtn { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 7px; cursor: pointer; padding: 2px 8px; }
 
 /* ---------- main ---------- */
 main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
-@media (max-width: 820px) { main { height: auto; min-height: 55vh; } }
-.topbar { border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
-.types { display: inline-flex; background: var(--bubble); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: wrap; justify-content: center; }
-.types button { border: none; background: none; color: var(--muted); padding: 6px 14px; border-radius: 8px; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600; }
-.types button.on { background: var(--bg); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
-.explain { max-width: 760px; width: 100%; font-size: 13px; color: var(--muted); text-align: center; }
+@media (max-width: 860px) { main { height: auto; min-height: 58vh; } }
+.topbar { border-bottom: 1px solid var(--border); padding: 10px 18px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.topline { width: 100%; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.scen-name { flex: 1; font-weight: 600; font-size: 14px; min-width: 120px; }
+.scen-name .edited { font-size: 11px; font-weight: 600; color: var(--orange); background: var(--orange-soft); border-radius: 99px; padding: 1px 8px; margin-left: 6px; }
+.tabs, .types { display: inline-flex; background: var(--bubble); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: wrap; justify-content: center; }
+.tabs button, .types button { border: none; background: none; color: var(--muted); padding: 5px 13px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+.tabs button.on, .types button.on { background: var(--bg); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+.types button:disabled { opacity: .35; cursor: not-allowed; }
+.edit-btn { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.edit-btn:hover { background: var(--bubble); }
+.controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.engines { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.eng-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+  border-radius: 99px; padding: 4px 11px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.eng-chip .sw { width: 10px; height: 10px; border-radius: 50%; background: var(--track); }
+.eng-chip.on { color: var(--text); border-color: var(--text); }
+.eng-chip:disabled { opacity: .4; cursor: not-allowed; }
+.explain { max-width: 820px; width: 100%; font-size: 13px; color: var(--muted); text-align: center; }
 .explain b { color: var(--text); }
-.explain .q { display: inline-block; margin-top: 3px; font-style: italic; color: var(--text); }
+.explain .q { display: inline-block; margin-top: 2px; font-style: italic; color: var(--text); }
 
-#chat { flex: 1; overflow-y: auto; padding: 24px 16px 8px; }
-.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
-.welcome { text-align: center; color: var(--muted); margin-top: 6vh; }
+.view { flex: 1; overflow-y: auto; padding: 22px 16px 8px; }
+.wrap { max-width: 1060px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.welcome { text-align: center; color: var(--muted); margin-top: 5vh; }
 .welcome h2 { color: var(--text); font-size: 24px; margin: 0 0 6px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
-.chips button { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 18px; padding: 7px 14px; cursor: pointer; font: inherit; font-size: 13px; }
+.chips button { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 18px; padding: 7px 14px; cursor: pointer; font-size: 13px; }
 .chips button:hover { background: var(--bubble); }
 .ctx { align-self: center; font-size: 12px; color: var(--muted); background: var(--bubble); border-radius: 8px; padding: 4px 10px; max-width: 90%; }
-.msg-user { align-self: flex-end; background: var(--bubble); border-radius: 18px; padding: 10px 16px; max-width: 80%; white-space: pre-wrap; word-wrap: break-word; }
-.msg-bot { align-self: flex-start; display: flex; gap: 10px; max-width: 100%; width: 100%; }
-.avatar { width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
-.bot-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
-.card { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
-.card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.pill { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; }
+.msg-user { align-self: flex-end; background: var(--bubble); border-radius: 18px; padding: 10px 16px; max-width: 75%; white-space: pre-wrap; word-wrap: break-word; }
+.reply { display: flex; flex-direction: column; gap: 8px; }
+.agree-strip { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; }
+.agree-strip span { border-radius: 99px; padding: 2px 10px; background: var(--bubble); color: var(--muted); }
+.agree-strip .yes { background: var(--green-soft); color: var(--green); } .agree-strip .no { background: var(--orange-soft); color: var(--orange); }
+.grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.ecard { border: 1px solid var(--border); border-top: 3px solid var(--ec); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ecard-head { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
+.ecard-head .sw { width: 10px; height: 10px; border-radius: 50%; background: var(--ec); flex: 0 0 10px; }
+.ecard-head small { font-weight: 500; color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qa { border-top: 1px solid var(--border); padding-top: 7px; }
+.qa:first-of-type { border-top: none; padding-top: 0; }
+.qa-top { display: flex; align-items: center; gap: 6px; }
+.pill { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 1px 7px; border-radius: 99px; }
 .p-choice { background: var(--blue-soft); color: var(--blue); } .p-score { background: var(--orange-soft); color: var(--orange); } .p-noul { background: var(--green-soft); color: var(--green); }
-.qtext { font-size: 13px; color: var(--muted); }
-.answer { font-size: 22px; font-weight: 700; margin: 6px 0 2px; word-break: break-word; }
+.qid { font-family: var(--mono); font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.answer { font-size: 19px; font-weight: 700; word-break: break-word; line-height: 1.3; margin-top: 2px; }
 .answer .yes { color: var(--green); } .answer .no { color: var(--red); }
-.answer small { font-size: 14px; font-weight: 500; color: var(--muted); }
-.sub { font-size: 13px; color: var(--muted); }
-.meter { height: 8px; background: var(--track); border-radius: 4px; overflow: hidden; margin: 8px 0 4px; }
-.meter i { display: block; height: 100%; border-radius: 4px; }
-.scale { position: relative; height: 8px; background: var(--track); border-radius: 4px; margin: 12px 0 4px; }
-.scale .needle { position: absolute; top: -5px; width: 4px; height: 18px; background: var(--orange); border-radius: 2px; transform: translateX(-2px); }
-.scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); gap: 6px; }
-.scale-labels span { flex: 1; text-align: center; } .scale-labels span:first-child { text-align: left; } .scale-labels span:last-child { text-align: right; }
-.probs { margin-top: 8px; display: none; }
-.card.open .probs { display: block; }
-.prow { display: grid; grid-template-columns: minmax(70px, 160px) 1fr 48px; gap: 8px; align-items: center; font-size: 12px; margin: 3px 0; }
+.answer small { font-size: 12px; font-weight: 500; color: var(--muted); }
+.meter { height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; margin-top: 5px; }
+.meter i { display: block; height: 100%; border-radius: 3px; background: var(--ec); }
+.noprob { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.probs { margin-top: 6px; display: none; }
+.ecard.open .probs { display: block; }
+.prow { display: grid; grid-template-columns: minmax(50px, 110px) 1fr 40px; gap: 6px; align-items: center; font-size: 11px; margin: 2px 0; }
 .prow .l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.prow .b { height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; } .prow .b i { display: block; height: 100%; background: var(--muted); }
-.prow.win .l { font-weight: 700; } .prow.win .b i { background: var(--blue); }
+.prow .b { height: 5px; background: var(--track); border-radius: 3px; overflow: hidden; } .prow .b i { display: block; height: 100%; background: var(--muted); }
+.prow.win .l { font-weight: 700; } .prow.win .b i { background: var(--ec); }
 .prow .v { font-family: var(--mono); text-align: right; }
-.toggle { background: none; border: none; color: var(--muted); cursor: pointer; font: inherit; font-size: 12px; padding: 0; margin-top: 6px; }
-.foot { font-size: 11px; color: var(--muted); }
-.err { color: var(--red); background: var(--red-soft); border-radius: 10px; padding: 10px 12px; white-space: pre-wrap; font-size: 14px; }
+.stats { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 7px; margin-top: auto; }
+.stats b { color: var(--text); font-weight: 600; font-family: var(--mono); }
+.cost { font-size: 12px; color: var(--muted); }
+.cost b { color: var(--text); font-weight: 600; font-family: var(--mono); }
+.cost .calc { font-family: var(--mono); font-size: 11px; margin-top: 1px; }
+.toggle { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 12px; padding: 0; text-align: left; }
+.err { color: var(--red); background: var(--red-soft); border-radius: 10px; padding: 9px 11px; white-space: pre-wrap; font-size: 13px; word-break: break-word; }
 .typing { color: var(--muted); font-size: 14px; }
 .typing::after { content: "…"; animation: blink 1s infinite; } @keyframes blink { 50% { opacity: .2; } }
 
-/* ---------- top line + edit drawer ---------- */
-.topline { width: 100%; display: flex; align-items: center; gap: 10px; }
-.scen-name { flex: 1; font-weight: 600; font-size: 14px; }
-.scen-name .edited { font-size: 11px; font-weight: 600; color: var(--orange); background: var(--orange-soft); border-radius: 99px; padding: 1px 8px; margin-left: 6px; }
-.edit-btn { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; }
-.edit-btn:hover { background: var(--bubble); }
+/* ---------- dashboard ---------- */
+.viz-root { color-scheme: light; }
+.dash-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.dash-head h2 { margin: 0; font-size: 20px; }
+.dash-head .sub { color: var(--muted); font-size: 13px; flex: 1; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.tile { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.tile .t { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.tile .t i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.tile .big { font-size: 26px; font-weight: 700; margin: 2px 0; }
+.tile .row { font-size: 12px; color: var(--muted); }
+.tile .row b { color: var(--text); font-family: var(--mono); font-weight: 600; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.chart { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; background: var(--surface-1); }
+.chart h3 { margin: 0 0 2px; font-size: 14px; }
+.chart .cap { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.hbar { display: grid; grid-template-columns: 78px 1fr auto; gap: 8px; align-items: center; margin: 7px 0; font-size: 13px; position: relative; }
+.hbar .track { height: 14px; position: relative; }
+.hbar .fill { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
+.hbar .val { font-family: var(--mono); font-size: 12px; min-width: 70px; text-align: right; }
+.hbar:hover .fill { filter: brightness(1.12); }
+.hbar .na { font-size: 12px; color: var(--muted); }
+.tip { position: fixed; pointer-events: none; background: var(--text); color: var(--bg); font-size: 12px; padding: 5px 8px; border-radius: 6px;
+  opacity: 0; transition: opacity .1s; z-index: 50; max-width: 260px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data th, table.data td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.data th { color: var(--muted); font-weight: 600; font-size: 12px; }
+table.data td.num { font-family: var(--mono); text-align: right; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+details.box > summary { cursor: pointer; font-weight: 600; font-size: 14px; padding: 4px 0; }
+.dash-empty { text-align: center; color: var(--muted); padding: 50px 10px; }
+.btn-lite { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; padding: 5px 11px; cursor: pointer; font-size: 13px; }
+
+/* ---------- composer ---------- */
+.composer { padding: 10px 16px 16px; }
+.composer .box { max-width: 820px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; border: 1px solid var(--border);
+  border-radius: 24px; padding: 8px 8px 8px 16px; background: var(--bg); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.composer textarea { flex: 1; border: none; outline: none; resize: none; min-height: 24px; max-height: 160px; font: inherit; font-size: 15px; padding: 6px 0; background: transparent; color: var(--text); }
+.send { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; border: none; background: var(--text); color: var(--bg); cursor: pointer; font-size: 16px; }
+.send:disabled { opacity: .35; cursor: default; }
+.composer .note { max-width: 820px; margin: 6px auto 0; font-size: 11px; color: var(--muted); text-align: center; }
+
+/* ---------- edit drawer ---------- */
 .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 20; }
 .scrim.open { opacity: 1; pointer-events: auto; }
-.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100vw); background: var(--bg); border-left: 1px solid var(--border);
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(470px, 100vw); background: var(--bg); border-left: 1px solid var(--border);
   box-shadow: -8px 0 24px rgba(0,0,0,.12); transform: translateX(100%); transition: transform .22s ease; z-index: 21; display: flex; flex-direction: column; }
 .drawer.open { transform: none; }
 .drawer-head { display: flex; align-items: flex-start; gap: 10px; padding: 16px 18px 10px; border-bottom: 1px solid var(--border); }
@@ -120,13 +191,16 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
 .drawer-body { flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 14px; }
 .drawer-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--border); }
 .drawer-foot .saved { flex: 1; font-size: 12px; color: var(--green); text-align: right; }
-.done { border: none; background: var(--text); color: var(--bg); border-radius: 8px; padding: 8px 18px; cursor: pointer; font: inherit; font-weight: 600; }
+.done { border: none; background: var(--text); color: var(--bg); border-radius: 8px; padding: 8px 18px; cursor: pointer; font-weight: 600; }
 .sec { border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
 .sec.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
-.sec-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.sec-head .what { font-size: 12px; color: var(--muted); }
+.sec.off { opacity: .75; }
+.sec-head { display: flex; align-items: center; gap: 8px; }
+.sec-head .what { font-size: 12px; color: var(--muted); flex: 1; }
+.sec-body { margin-top: 8px; }
+.switch { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+.switch input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
 .fl { font-size: 12px; font-weight: 600; color: var(--muted); margin: 8px 0 4px; display: block; }
-.fl:first-of-type { margin-top: 0; }
 .drawer input[type=text] { font-size: 14px; padding: 8px 10px; }
 .opt-row { display: grid; grid-template-columns: 130px 1fr 28px; gap: 6px; margin-bottom: 6px; align-items: center; }
 .lvl-row { display: grid; grid-template-columns: 22px 1fr 28px; gap: 6px; margin-bottom: 6px; align-items: center; }
@@ -135,33 +209,30 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
 .yn-row .yes { color: var(--green); } .yn-row .no { color: var(--red); }
 .rm { border: none; background: none; color: var(--muted); cursor: pointer; font-size: 15px; border-radius: 6px; height: 28px; }
 .rm:hover { color: var(--red); background: var(--red-soft); }
-.add { border: 1px dashed var(--border); background: none; color: var(--accent); border-radius: 8px; padding: 6px; width: 100%; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; }
+.add { border: 1px dashed var(--border); background: none; color: var(--accent); border-radius: 8px; padding: 6px; width: 100%; cursor: pointer; font-size: 13px; font-weight: 600; }
 .add:hover { background: var(--accent-soft); }
 .warn { font-size: 12px; color: var(--red); margin-top: 4px; }
-.tip { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 @media (max-width: 560px) { .opt-row { grid-template-columns: 1fr 28px; } .opt-row input:nth-child(2) { grid-column: 1; } }
-
-.composer { padding: 10px 16px 16px; }
-.composer .box { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; border: 1px solid var(--border);
-  border-radius: 24px; padding: 8px 8px 8px 16px; background: var(--bg); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
-.composer textarea { border: none; outline: none; resize: none; min-height: 24px; max-height: 160px; font: inherit; font-size: 15px; padding: 6px 0; background: transparent; }
-.send { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; border: none; background: var(--text); color: var(--bg); cursor: pointer; font-size: 16px; }
-.send:disabled { opacity: .35; cursor: default; }
-.composer .note { max-width: 760px; margin: 6px auto 0; font-size: 11px; color: var(--muted); text-align: center; }
 </style>
 </head>
 <body>
 <aside>
   <div class="brand"><span class="dot">L</span> Laya Chat <span class="spacer"></span><button id="themeBtn" title="Theme">◐</button></div>
+  <button class="newchat" id="newChat">＋ New chat <small style="color:var(--muted);font-weight:400">(your own questions)</small></button>
 
   <div>
-    <div class="side-title">Scenario</div>
+    <div class="side-title">My chats</div>
+    <div class="scenarios" id="myChats"></div>
+  </div>
+  <div>
+    <div class="side-title">Example scenarios</div>
     <div class="scenarios" id="scenarios"></div>
   </div>
 
   <div>
     <div class="side-title">Settings</div>
-    <label class="small">Model (checkpoint)</label>
+    <label class="small">Laya checkpoint</label>
     <select id="model">
       <option value="auto">Auto: pick by language</option>
       <option value="english">English</option>
@@ -173,8 +244,8 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
     <div class="status" id="status" style="margin-top:6px">checking…</div>
   </div>
 
-  <div class="sub" style="margin-top:auto">
-    Want every probability and many questions at once? <a href="index.html" id="advLink" style="color:var(--accent)">Open the advanced playground</a>
+  <div class="empty-note" style="margin-top:auto; padding:0">
+    Every probability and many questions at once: <a href="index.html" id="advLink" style="color:var(--accent)">advanced playground</a>
   </div>
 </aside>
 
@@ -182,27 +253,34 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
   <div class="topbar">
     <div class="topline">
       <span class="scen-name" id="scenName"></span>
-      <button class="edit-btn" id="editBtn" title="Edit this scenario's questions">✎ Edit questions</button>
+      <span class="tabs" id="tabs"><button data-v="chat" class="on">Chat</button><button data-v="dash">Dashboard</button></span>
+      <button class="edit-btn" id="editBtn" title="Edit this chat's questions">✎ Edit questions</button>
     </div>
-    <div class="types" id="types">
-      <button data-t="choice">Choice</button>
-      <button data-t="score">Score</button>
-      <button data-t="noul">Yes / No (noul)</button>
-      <button data-t="all">All 3</button>
+    <div class="controls" id="chatControls">
+      <span class="engines" id="engines"></span>
+      <span class="types" id="types">
+        <button data-t="choice">Choice</button>
+        <button data-t="score">Score</button>
+        <button data-t="noul">Yes / No</button>
+        <button data-t="all">All</button>
+      </span>
     </div>
     <div class="explain" id="explain"></div>
   </div>
 
-  <div id="chat"><div class="wrap" id="thread"></div></div>
+  <div class="view" id="chatView"><div class="wrap" id="thread"></div></div>
+  <div class="view" id="dashView" hidden><div class="wrap viz-root" id="dash"></div></div>
 
-  <div class="composer">
+  <div class="composer" id="composer">
     <div class="box">
       <textarea id="input" rows="1" placeholder="Type what the user says…"></textarea>
       <button class="send" id="send" title="Send (Enter)">↑</button>
     </div>
-    <div class="note">Laya doesn't write replies. It <b>decides</b>: it picks an answer from the options you define and says how sure it is. Enter to send, Shift+Enter for a new line.</div>
+    <div class="note">The same message goes to every selected engine at the same time. Laya runs locally; Jev and Azure are API calls. Enter to send, Shift+Enter for a new line.</div>
   </div>
 </main>
+
+<div class="tip" id="tip"></div>
 
 <!-- ============ edit drawer ============ -->
 <div class="scrim" id="scrim"></div>
@@ -210,13 +288,13 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
   <div class="drawer-head">
     <div>
       <div class="drawer-title" id="drawerTitle">Edit questions</div>
-      <div class="drawer-sub">Changes apply straight away and are saved in this browser.</div>
+      <div class="drawer-sub">Turn on only the question types you want. Changes apply straight away.</div>
     </div>
     <button class="x" id="closeDrawer" title="Close">✕</button>
   </div>
   <div class="drawer-body" id="drawerBody"></div>
   <div class="drawer-foot">
-    <button class="link" id="resetBtn">↺ Reset this scenario to default</button>
+    <button class="link" id="resetBtn">↺ Reset to default</button>
     <span class="saved" id="savedNote"></span>
     <button class="done" id="doneBtn">Done</button>
   </div>
@@ -226,17 +304,23 @@ main { display: flex; flex-direction: column; min-height: 0; height: 100vh; }
 "use strict";
 // ======================================================================= explanations
 const TYPE_INFO = {
-  choice: { name: "Choice", short: "Pick ONE option from a list.",
-    long: "Laya reads the message and picks the <b>single best option</b> from a list you define (e.g. billing / technical / other). You get the chosen option and how sure it is." },
-  score: { name: "Score", short: "Place it on a scale, lowest to highest.",
-    long: "Laya rates the message on an <b>ordered scale</b> you define (e.g. not urgent → soon → blocking). You get a number on that scale, like 1.8 of 0–2, and the level it's closest to." },
-  noul: { name: "Yes / No", short: "Answer a yes-or-no question with a probability.",
-    long: "<b>noul</b> is Laya's yes/no type. It answers a <b>yes-or-no question</b> and gives the <b>probability of YES</b> from 0% to 100%. Above 50% means yes." },
-  all: { name: "All 3", short: "", long: "Ask the <b>choice, score and yes/no</b> questions of this scenario together. Laya answers all three in one pass." },
+  choice: { name: "Choice",
+    long: "<b>Choice</b>: pick the <b>single best option</b> from a list you define (e.g. billing / technical / other)." },
+  score: { name: "Score",
+    long: "<b>Score</b>: rate the message on an <b>ordered scale</b> you define (e.g. not urgent → blocking). The answer is a number on that scale." },
+  noul: { name: "Yes / No",
+    long: "<b>Yes / No</b> (<i>noul</i>): answer a <b>yes-or-no question</b> with the <b>probability of YES</b>. Above 50% means yes." },
+  all: { name: "All",
+    long: "<b>All</b>: ask every question type turned on for this chat, in one call per engine." },
+};
+const TYPES = ["choice", "score", "noul"];
+const ENGINES = {
+  laya:  { name: "Laya",  sub: "local, self-hosted", color: "var(--e-laya)" },
+  jev:   { name: "Jev",   sub: "TypeSafe API",       color: "var(--e-jev)" },
+  azure: { name: "Azure GPT", sub: "Azure OpenAI",   color: "var(--e-azure)" },
 };
 
-// ======================================================================= scenarios
-// Each scenario has one question of each type. `context` = the bot's previous line (sent with your message).
+// ======================================================================= built-in scenarios
 const SCENARIOS = [
   { id: "support", name: "Customer support", desc: "Route and prioritise tickets", model: "auto", context: "",
     examples: ["I was charged twice for March, refund it today or I cancel!", "The app crashes when I open settings", "Do you have a student discount?"],
@@ -289,200 +373,496 @@ const store = {
   get(k) { try { return JSON.parse(localStorage.getItem("laya-chat-" + k)); } catch { return null; } },
   set(k, v) { try { localStorage.setItem("laya-chat-" + k, JSON.stringify(v)); } catch {} },
 };
+const clone = (x) => JSON.parse(JSON.stringify(x));
+let overrides = store.get("overrides") || {};  // built-in scenario id -> {context, choice, score, noul} (null = turned off)
+let custom = store.get("custom") || [];         // user-created chats, same shape as a scenario
+let runs = store.get("runs") || [];             // every comparison, for the dashboard
+let engineOn = store.get("engines") || { laya: true, jev: true, azure: true };
+let engineAvail = { laya: true, jev: true, azure: true };
 let scenario = SCENARIOS[0];
 let qtype = "choice";
-let overrides = store.get("overrides") || {};   // { scenarioId: { choice: {...}, score: {...}, noul: {...}, context } }
+let view = "chat";
 let busy = false;
 
 function el(tag, attrs = {}, ...kids) {
   const e = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
     if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k === "html") e.innerHTML = v;
+    else if (k === "style" && typeof v === "object") Object.assign(e.style, v);
     else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v);
   }
-  for (const kid of kids) if (kid != null) e.append(kid);
+  for (const kid of kids) if (kid != null && kid !== false) e.append(kid);
   return e;
 }
-const clone = (x) => JSON.parse(JSON.stringify(x));
-function cfg(type) { return (overrides[scenario.id] && overrides[scenario.id][type]) || scenario[type]; }
-function ctx() { const o = overrides[scenario.id]; return o && o.context != null ? o.context : scenario.context; }
 function apiBase() { return $("apiUrl").value.replace(/\/+$/, ""); }
+const isCustom = (s) => !!s.custom;
 
-// ======================================================================= building the Laya request
+// question config for a type in the current chat (null = turned off)
+function cfg(type, s = scenario) {
+  if (isCustom(s)) return s[type];
+  const o = overrides[s.id];
+  return o && type in o ? o[type] : s[type];
+}
+function ctx(s = scenario) {
+  if (isCustom(s)) return s.context || "";
+  const o = overrides[s.id];
+  return o && o.context != null ? o.context : s.context;
+}
+function enabledTypes() { return TYPES.filter(t => cfg(t)); }
+function activeTypes() { return qtype === "all" ? enabledTypes() : [qtype]; }
+
+// ======================================================================= requests
 function questionFor(type) {
   const c = cfg(type);
-  if (type === "choice") return { type, instructions: c.q, criteria: Object.fromEntries(c.opts.filter(([k]) => k.trim()).map(([k, d]) => [k.trim(), d.trim() || k.trim()])) };
+  if (type === "choice") return { type, instructions: c.q, criteria: Object.fromEntries(c.opts.filter(([k]) => k.trim()).map(([k, d]) => [k.trim(), (d || "").trim() || k.trim()])) };
   if (type === "score") return { type, instructions: c.q, criteria: c.levels.map(l => l.trim()).filter(Boolean) };
   const q = { type, instructions: c.q };
   const crit = {};
-  if (c.f) crit.false = c.f;
-  if (c.t) crit.true = c.t;
+  if ((c.f || "").trim()) crit.false = c.f.trim();
+  if ((c.t || "").trim()) crit.true = c.t.trim();
   if (Object.keys(crit).length) q.criteria = crit;
   return q;
 }
+function problems(type, c) {
+  if (!c) return "";
+  if (!c.q.trim()) return "The question is empty.";
+  if (type === "choice") {
+    const keys = c.opts.map(o => o[0].trim()).filter(Boolean);
+    if (keys.length < 2) return "Add at least 2 options with a name.";
+    if (new Set(keys).size !== keys.length) return "Two options have the same name.";
+  }
+  if (type === "score") {
+    const n = c.levels.filter(l => l.trim()).length;
+    if (n < 2) return "Add at least 2 levels.";
+    if (n > 10) return "Jev accepts at most 10 levels.";
+  }
+  return "";
+}
 function buildRequest(text) {
-  const types = qtype === "all" ? ["choice", "score", "noul"] : [qtype];
+  const types = activeTypes();
   const questions = Object.fromEntries(types.map(t => [t, questionFor(t)]));
   const c = ctx();
-  // Turns use role/content: the english checkpoint ignores turns keyed "speaker" (see docs/06).
-  const state = c ? [{ role: "assistant", content: c }, { role: scenario.id === "turn" || scenario.id === "bargein" ? "caller" : "user", content: text }] : text;
-  return { state, questions, model: $("model").value };
+  // role/content turns: Laya's english checkpoint ignores turns keyed "speaker" (docs/06)
+  const state = c ? [{ role: "assistant", content: c }, { role: ["turn", "bargein"].includes(scenario.id) ? "caller" : "user", content: text }] : text;
+  const engines = Object.keys(ENGINES).filter(e => engineOn[e] && engineAvail[e]);
+  return { state, questions, model: $("model").value, engines };
 }
 
-// ======================================================================= rendering
-function pct(p) { return Math.round(p * 100) + "%"; }
+// ======================================================================= answer rendering
+const pct = (p) => Math.round(p * 100) + "%";
 function sureWord(p) { return p >= 0.85 ? "very sure" : p >= 0.65 ? "fairly sure" : p >= 0.45 ? "unsure" : "guessing"; }
-
-function probsBlock(entries, winner, labels) {
-  return el("div", { class: "probs" }, ...entries.map(([k, p]) =>
-    el("div", { class: "prow" + (k === winner ? " win" : "") },
-      el("span", { class: "l", text: labels ? `${k}: ${labels[k]}` : k, title: labels ? labels[k] : k }),
-      el("span", { class: "b" }, el("i", { style: `width:${p * 100}%` })),
-      el("span", { class: "v", text: pct(p) }))));
+// Plain dollars, never scientific notation: keep 3 significant digits ($0.0000992, $0.0165, $16.50)
+function money(x) {
+  if (x == null) return "—";
+  if (x === 0) return "$0";
+  const digits = Math.min(10, Math.max(2, 2 - Math.floor(Math.log10(Math.abs(x)))));
+  return "$" + x.toFixed(digits);
+}
+function costLine(eng, r) {
+  if (eng === "laya") return { text: "$0 per message (runs on your machine: you pay for the server, not per call)", calc: "" };
+  const pin = r.price_in_per_m ?? (eng === "jev" ? 0.042 : 0.40), pout = r.price_out_per_m ?? (eng === "jev" ? 0 : 1.60);
+  const calc = `${r.tokens_in} in × $${pin}/1M` + (pout ? ` + ${r.tokens_out} out × $${pout}/1M` : ` (output free)`);
+  return { text: `${money(r.cost_usd)} this message · ${money(r.cost_usd * 1000)} per 1K · ${money(r.cost_usd * 1e6)} per 1M messages`, calc };
+}
+function norm(a) {  // comparable value for agreement checks
+  if (!a) return null;
+  if (a.type === "choice") return a.choice;
+  if (a.type === "score") return a.score == null ? null : Math.round(a.score);
+  return a.noul >= 0.5;
 }
 
-function answerCard(type, a, question) {
-  const card = el("div", { class: "card" });
-  card.append(el("div", { class: "card-top" },
-    el("span", { class: `pill p-${type}`, text: TYPE_INFO[type].name }),
-    el("span", { class: "qtext", text: question.instructions })));
-  const conf = a.answer_confidence ?? 0;
-
+function answerBlock(qid, a, question) {
+  const box = el("div", { class: "qa" });
+  box.append(el("div", { class: "qa-top" }, el("span", { class: `pill p-${a.type}`, text: TYPE_INFO[a.type].name }),
+    el("span", { class: "qid", text: question.instructions, title: question.instructions })));
+  const conf = a.answer_confidence;
+  const hasProbs = !!a.probabilities || (a.type === "noul" && conf != null);
   if (a.type === "choice") {
-    const desc = question.criteria[a.choice];
-    card.append(el("div", { class: "answer" }, a.choice, el("small", { text: `  ${pct(conf)} · ${sureWord(conf)}` })));
-    if (desc && desc !== a.choice) card.append(el("div", { class: "sub", text: desc }));
-    card.append(el("div", { class: "meter" }, el("i", { style: `width:${conf * 100}%; background: var(--blue)` })));
-    card.append(probsBlock(Object.entries(a.probabilities).sort((x, y) => y[1] - x[1]), a.choice, question.criteria));
+    box.append(el("div", { class: "answer" }, a.choice, conf != null ? el("small", { text: `  ${pct(conf)} · ${sureWord(conf)}` }) : null));
+    if (conf != null) box.append(el("div", { class: "meter" }, el("i", { style: { width: `${conf * 100}%` } })));
   } else if (a.type === "score") {
-    const n = Object.keys(a.legend).length;
-    const nearest = a.legend[String(Math.round(a.score))];
-    card.append(el("div", { class: "answer" }, `${a.score.toFixed(1)} / ${n - 1}`, el("small", { text: `  → ${nearest}` })));
-    card.append(el("div", { class: "scale" }, el("span", { class: "needle", style: `left:${n > 1 ? a.score / (n - 1) * 100 : 50}%` })));
-    card.append(el("div", { class: "scale-labels" }, ...Object.values(a.legend).map(l => el("span", { text: l }))));
-    const best = Object.entries(a.probabilities).sort((x, y) => y[1] - x[1])[0][0];
-    card.append(probsBlock(Object.entries(a.probabilities).map(([i, p]) => [i, p]), best, a.legend));
+    const n = Object.keys(a.legend || {}).length || question.criteria.length;
+    const lv = a.score == null ? "?" : (question.criteria[Math.round(a.score)] || "?");
+    box.append(el("div", { class: "answer" }, a.score == null ? "invalid" : `${Number(a.score).toFixed(1)} / ${n - 1}`, el("small", { text: `  → ${lv}` })));
+    if (a.score != null) box.append(el("div", { class: "meter" }, el("i", { style: { width: `${n > 1 ? a.score / (n - 1) * 100 : 50}%` } })));
   } else {
     const yes = a.noul >= 0.5;
-    card.append(el("div", { class: "answer" }, el("span", { class: yes ? "yes" : "no", text: yes ? "YES" : "NO" }),
-      el("small", { text: `  ${pct(a.noul)} chance of yes · ${sureWord(Math.max(a.noul, 1 - a.noul))}` })));
-    const why = question.criteria ? question.criteria[yes ? "true" : "false"] : null;
-    if (why) card.append(el("div", { class: "sub", text: why }));
-    card.append(el("div", { class: "meter" }, el("i", { style: `width:${a.noul * 100}%; background: ${yes ? "var(--green)" : "var(--red)"}` })));
-    card.append(probsBlock([["yes", a.noul], ["no", 1 - a.noul]], yes ? "yes" : "no"));
+    box.append(el("div", { class: "answer" }, el("span", { class: yes ? "yes" : "no", text: yes ? "YES" : "NO" }),
+      hasProbs ? el("small", { text: `  ${pct(a.noul)} chance of yes` }) : null));
+    if (hasProbs) box.append(el("div", { class: "meter" }, el("i", { style: { width: `${a.noul * 100}%` } })));
   }
-  const t = el("button", { class: "toggle", text: "Show all probabilities ▾" });
-  t.onclick = () => { card.classList.toggle("open"); t.textContent = card.classList.contains("open") ? "Hide probabilities ▴" : "Show all probabilities ▾"; };
-  card.append(t);
+  if (a.valid === false) box.append(el("div", { class: "err", style: { padding: "4px 8px", fontSize: "12px" }, text: "returned an answer that isn't one of the options" }));
+  if (!hasProbs) box.append(el("div", { class: "noprob", text: "no probability: an LLM returns only the answer" }));
+  if (a.probabilities) {
+    const entries = a.type === "noul" ? [["yes", a.noul], ["no", 1 - a.noul]]
+      : Object.entries(a.probabilities).sort((x, y) => a.type === "score" ? 0 : y[1] - x[1]);
+    const win = a.type === "choice" ? a.choice : a.type === "score" ? entries.slice().sort((x, y) => y[1] - x[1])[0][0] : null;
+    box.append(el("div", { class: "probs" }, ...entries.map(([k, p]) => el("div", { class: "prow" + (k === win ? " win" : "") },
+      el("span", { class: "l", text: a.type === "score" ? `${k}: ${question.criteria[k] || ""}` : k }),
+      el("span", { class: "b" }, el("i", { style: { width: `${p * 100}%` } })), el("span", { class: "v", text: pct(p) })))));
+  } else if (a.type === "noul" && hasProbs) {
+    box.append(el("div", { class: "probs" }, ...[["yes", a.noul], ["no", 1 - a.noul]].map(([k, p]) => el("div", { class: "prow" + ((k === "yes") === (a.noul >= .5) ? " win" : "") },
+      el("span", { class: "l", text: k }), el("span", { class: "b" }, el("i", { style: { width: `${p * 100}%` } })), el("span", { class: "v", text: pct(p) })))));
+  }
+  return box;
+}
+
+function engineCard(eng, r, questions) {
+  const meta = ENGINES[eng];
+  const card = el("div", { class: "ecard", style: { "--ec": meta.color } });
+  card.style.setProperty("--ec", meta.color);
+  card.append(el("div", { class: "ecard-head" }, el("span", { class: "sw" }), meta.name, el("small", { text: r.model || meta.sub })));
+  if (r.error) {
+    card.append(el("div", { class: "err", text: r.error }));
+  } else {
+    for (const [qid, q] of Object.entries(questions)) {
+      const a = r.answers[qid];
+      card.append(a ? answerBlock(qid, a, q) : el("div", { class: "err", text: `no answer for ${qid}` }));
+    }
+    if (Object.values(r.answers).some(a => a.probabilities)) {
+      const t = el("button", { class: "toggle", text: "Show probabilities ▾" });
+      t.onclick = () => { card.classList.toggle("open"); t.textContent = card.classList.contains("open") ? "Hide probabilities ▴" : "Show probabilities ▾"; };
+      card.append(t);
+    }
+  }
+  const tokens = eng === "laya" ? `${r.tokens_in} in (local)` : `${r.tokens_in} in / ${r.tokens_out} out`;
+  const nq = Object.keys(questions).length;
+  card.append(el("div", { class: "stats" },
+    el("span", { title: eng === "laya" ? "Model compute time on this machine (no network). Laya runs one model pass per question, so time grows with the number of questions."
+                                       : "Full API round trip from the server, including network" },
+      "time ", el("b", { text: `${Math.round(r.latency_ms)} ms` }),
+      eng === "laya" && nq > 1 ? ` (${nq} questions ≈ ${Math.round(r.latency_ms / nq)} ms each)` : ""),
+    el("span", {}, "tokens ", el("b", { text: tokens })),
+    r.cold_load ? el("span", { text: "includes model load" }) : null));
+  if (!r.error) {
+    const c = costLine(eng, r);
+    card.append(el("div", { class: "cost" }, el("div", {}, "cost ", el("b", { text: c.text })), c.calc ? el("div", { class: "calc", text: "= " + c.calc }) : null));
+  }
   return card;
 }
 
-function scroll() { const c = $("chat"); c.scrollTop = c.scrollHeight; }
+function agreementStrip(results, questions) {
+  const ok = Object.entries(results).filter(([, r]) => !r.error);
+  if (ok.length < 2) return null;
+  const strip = el("div", { class: "agree-strip" });
+  for (const [qid, q] of Object.entries(questions)) {
+    const vals = ok.map(([e, r]) => [e, norm(r.answers[qid])]);
+    const same = vals.every(([, v]) => JSON.stringify(v) === JSON.stringify(vals[0][1]));
+    strip.append(el("span", { class: same ? "yes" : "no",
+      text: `${TYPE_INFO[q.type].name}: ${same ? "✓ all agree" : "✗ engines differ: " + vals.map(([e, v]) => `${ENGINES[e].name}=${v === true ? "yes" : v === false ? "no" : v}`).join(", ")}` }));
+  }
+  return strip;
+}
 
+// ======================================================================= chat
+function scroll() { const c = $("chatView"); c.scrollTop = c.scrollHeight; }
 function welcome() {
   const thread = $("thread");
   thread.replaceChildren();
-  const w = el("div", { class: "welcome" },
-    el("h2", { text: scenario.name }),
-    el("div", { text: scenario.desc + ". Type a message and Laya will decide." }));
-  const chips = el("div", { class: "chips" });
-  scenario.examples.forEach(ex => chips.append(el("button", { text: ex, onclick: () => { $("input").value = ex; send(); } })));
-  w.append(chips);
+  const w = el("div", { class: "welcome" }, el("h2", { text: scenario.name }),
+    el("div", { text: (scenario.desc || "Your own questions") + ". Type a message: every selected engine answers it side by side." }));
+  const ex = scenario.examples || [];
+  if (ex.length) {
+    const chips = el("div", { class: "chips" });
+    ex.forEach(t => chips.append(el("button", { text: t, onclick: () => { $("input").value = t; send(); } })));
+    w.append(chips);
+  }
+  if (!enabledTypes().length) w.append(el("div", { class: "err", style: { marginTop: "16px", display: "inline-block" }, text: "No question is turned on yet. Click ✎ Edit questions to add a Choice, Score or Yes / No question." }));
   thread.append(w);
 }
 
 async function send() {
   const text = $("input").value.trim();
   if (!text || busy) return;
-  const bad = (qtype === "all" ? ["choice", "score", "noul"] : [qtype])
-    .map(t => [t, problems(t, cfg(t))]).filter(([, p]) => p);
-  if (bad.length) {
-    const w = $("thread").querySelector(".welcome"); if (w) w.remove();
-    $("thread").append(el("div", { class: "err", text: bad.map(([t, p]) => `${TYPE_INFO[t].name}: ${p}`).join("\n") + "\nFix it with ✎ Edit questions (top right)." }));
-    scroll(); return;
-  }
-  busy = true; $("send").disabled = true;
-  $("input").value = ""; autosize();
   const thread = $("thread");
   const w = thread.querySelector(".welcome"); if (w) w.remove();
+  const types = activeTypes();
+  const bad = types.map(t => [t, cfg(t) ? problems(t, cfg(t)) : "turned off for this chat"]).filter(([, p]) => p);
+  if (!types.length || bad.length) {
+    thread.append(el("div", { class: "err", text: (types.length ? bad.map(([t, p]) => `${TYPE_INFO[t].name}: ${p}`).join("\n") : "No question is turned on.") + "\nFix it with ✎ Edit questions (top right)." }));
+    return scroll();
+  }
+  const req = buildRequest(text);
+  if (!req.engines.length) { thread.append(el("div", { class: "err", text: "Select at least one engine above." })); return scroll(); }
+
+  busy = true; $("send").disabled = true;
+  $("input").value = ""; autosize();
   const c = ctx();
   if (c) thread.append(el("div", { class: "ctx", text: "Bot said: “" + c + "”" }));
   thread.append(el("div", { class: "msg-user", text }));
-  const body = el("div", { class: "bot-body" }, el("div", { class: "typing", text: "Laya is deciding" }));
-  thread.append(el("div", { class: "msg-bot" }, el("div", { class: "avatar", text: "L" }), body));
+  const reply = el("div", { class: "reply" }, el("div", { class: "typing", text: `Asking ${req.engines.map(e => ENGINES[e].name).join(", ")}` }));
+  thread.append(reply);
   scroll();
-
-  const req = buildRequest(text);
-  const t0 = performance.now();
   try {
-    const r = await fetch(apiBase() + "/api/predict", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(req) });
+    const r = await fetch(apiBase() + "/api/compare", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(req) });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(typeof data.detail === "string" ? data.detail : "HTTP " + r.status);
-    body.replaceChildren();
-    for (const [type, a] of Object.entries(data.answers)) body.append(answerCard(type, a, req.questions[type]));
-    const ms = data.timing ? data.timing.server_ms : performance.now() - t0;
-    body.append(el("div", { class: "foot", text:
-      `model: ${data.routing.model} · ${Math.round(ms)} ms${data.timing && data.timing.cold_load ? " (includes first-time model load)" : ""}` }));
+    reply.replaceChildren();
+    const strip = agreementStrip(data.results, req.questions); if (strip) reply.append(strip);
+    reply.append(el("div", { class: "grid" }, ...req.engines.map(e => engineCard(e, data.results[e], req.questions))));
+    recordRun(text, req, data.results);
     checkHealth();
   } catch (e) {
-    body.replaceChildren(el("div", { class: "err", text: e.message.includes("Failed to fetch")
-      ? `Can't reach the Laya server at ${apiBase()}.\nStart it with:  .venv\\Scripts\\python.exe playground\\server.py`
+    reply.replaceChildren(el("div", { class: "err", text: e.message.includes("Failed to fetch")
+      ? `Can't reach the server at ${apiBase()}.\nStart it with:  .venv\\Scripts\\python.exe playground\\server.py`
       : e.message }));
   } finally {
     busy = false; $("send").disabled = false; $("input").focus(); scroll();
   }
 }
 
-// ======================================================================= sidebar / type switch
+// ======================================================================= dashboard data
+function recordRun(text, req, results) {
+  const types = Object.fromEntries(Object.entries(req.questions).map(([k, q]) => [k, q.type]));
+  const rec = { at: Date.now(), chat: scenario.name, text, types, results: {} };
+  for (const [e, r] of Object.entries(results)) {
+    rec.results[e] = { ms: r.latency_ms, tin: r.tokens_in, tout: r.tokens_out, cost: r.cost_usd, err: !!r.error, cold: !!r.cold_load, model: r.model,
+      ans: Object.fromEntries(Object.entries(r.answers || {}).map(([k, a]) => [k, norm(a)])) };
+  }
+  runs.push(rec);
+  if (runs.length > 500) runs = runs.slice(-500);
+  store.set("runs", runs);
+}
+function quantile(xs, q) { if (!xs.length) return null; const s = xs.slice().sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor(q * s.length))]; }
+const median = (xs) => { if (!xs.length) return null; const s = xs.slice().sort((a, b) => a - b), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+function engineStats(e) {
+  const rs = runs.map(r => r.results[e]).filter(Boolean);
+  const ok = rs.filter(r => !r.err);
+  const warm = ok.filter(r => !r.cold).map(r => r.ms);
+  const cost = ok.reduce((s, r) => s + (r.cost || 0), 0);
+  return { calls: rs.length, errors: rs.length - ok.length, p50: median(warm), p95: quantile(warm, 0.95),
+    tin: ok.reduce((s, r) => s + (r.tin || 0), 0), tout: ok.reduce((s, r) => s + (r.tout || 0), 0),
+    avgTin: ok.length ? ok.reduce((s, r) => s + (r.tin || 0), 0) / ok.length : null,
+    avgTout: ok.length ? ok.reduce((s, r) => s + (r.tout || 0), 0) / ok.length : null,
+    cost, per1k: ok.length ? cost / ok.length * 1000 : null, model: (ok[ok.length - 1] || {}).model };
+}
+function agreementPairs() {
+  const pairs = [["laya", "jev"], ["laya", "azure"], ["jev", "azure"]];
+  return pairs.map(([a, b]) => {
+    let same = 0, n = 0;
+    for (const r of runs) {
+      const A = r.results[a], B = r.results[b];
+      if (!A || !B || A.err || B.err) continue;
+      for (const q of Object.keys(r.types)) { if (q in A.ans && q in B.ans) { n++; if (JSON.stringify(A.ans[q]) === JSON.stringify(B.ans[q])) same++; } }
+    }
+    return { a, b, same, n };
+  });
+}
+
+// ======================================================================= dashboard rendering
+const tip = () => $("tip");
+function showTip(ev, text) { const t = tip(); t.textContent = text; t.style.opacity = 1; t.style.left = (ev.clientX + 12) + "px"; t.style.top = (ev.clientY + 12) + "px"; }
+function hideTip() { tip().style.opacity = 0; }
+
+function barChart(title, caption, rows, fmt) {
+  const max = Math.max(...rows.map(r => r.v || 0), 0) || 1;
+  const box = el("div", { class: "chart" }, el("h3", { text: title }), el("div", { class: "cap", text: caption }));
+  for (const r of rows) {
+    const row = el("div", { class: "hbar" }, el("span", { text: ENGINES[r.e].name }));
+    if (r.v == null) {
+      row.append(el("span", { class: "na", text: r.na || "no data" }), el("span"));
+    } else {
+      const fill = el("div", { class: "fill", style: { width: `${Math.max(1, r.v / max * 100)}%`, background: ENGINES[r.e].color } });
+      row.append(el("div", { class: "track" }, fill), el("span", { class: "val", text: fmt(r.v) }));
+      row.addEventListener("mousemove", ev => showTip(ev, `${ENGINES[r.e].name}: ${fmt(r.v)}${r.extra ? " · " + r.extra : ""}`));
+      row.addEventListener("mouseleave", hideTip);
+    }
+    box.append(row);
+  }
+  return box;
+}
+
+function renderDashboard() {
+  const d = $("dash");
+  d.replaceChildren();
+  const engs = Object.keys(ENGINES);
+  d.append(el("div", { class: "dash-head" }, el("h2", { text: "Laya vs Jev vs Azure OpenAI" }),
+    el("span", { class: "sub", text: `${runs.length} messages compared in this browser · warm calls only for latency (Laya's first-time model load excluded)` }),
+    el("button", { class: "btn-lite", text: "Export CSV", onclick: exportCsv }),
+    el("button", { class: "btn-lite", text: "Clear data", onclick: () => { if (confirmClear()) { runs = []; store.set("runs", runs); renderDashboard(); } } })));
+  d.append(el("div", { class: "legend" }, ...engs.map(e => el("span", {}, el("i", { style: { background: ENGINES[e].color } }), ENGINES[e].name))));
+  if (!runs.length) {
+    d.append(el("div", { class: "dash-empty", text: "No comparisons yet. Go to Chat, send a few messages with all three engines on, and come back." }));
+    return;
+  }
+  const S = Object.fromEntries(engs.map(e => [e, engineStats(e)]));
+
+  // tiles: one per engine
+  d.append(el("div", { class: "tiles" }, ...engs.map(e => {
+    const s = S[e];
+    return el("div", { class: "tile" },
+      el("div", { class: "t" }, el("i", { style: { background: ENGINES[e].color } }), `${ENGINES[e].name} · ${s.model || ENGINES[e].sub}`),
+      el("div", { class: "big", text: s.p50 == null ? "—" : `${Math.round(s.p50)} ms` }),
+      el("div", { class: "row" }, "median time · p95 ", el("b", { text: s.p95 == null ? "—" : `${Math.round(s.p95)} ms` })),
+      el("div", { class: "row" }, "calls ", el("b", { text: String(s.calls) }), s.errors ? `  · errors ${s.errors}` : ""),
+      el("div", { class: "row" }, "tokens ", el("b", { text: `${s.tin} in / ${s.tout} out` })),
+      el("div", { class: "row" }, "total cost ", el("b", { text: e === "laya" ? "$0 (self-hosted)" : money(s.cost) })),
+      e === "laya" ? null : el("div", { class: "row" }, "per 1M messages ", el("b", { text: s.per1k == null ? "—" : money(s.per1k * 1000) })));
+  })));
+
+  // charts: one measure per chart (never two scales on one axis)
+  const row = (k, fmt, na) => engs.map(e => ({ e, v: S[e][k], na }));
+  d.append(el("div", { class: "charts" },
+    barChart("Median response time", "ms per message, warm calls · lower is better", row("p50"), v => `${Math.round(v)} ms`),
+    barChart("p95 response time", "ms · the slow tail users notice in voice", row("p95"), v => `${Math.round(v)} ms`),
+    barChart("Input tokens per message", "prompt size each engine billed or processed", row("avgTin"), v => v.toFixed(0)),
+    barChart("Output tokens per message", "Laya generates none; Jev's output tokens are free", engs.map(e => ({ e, v: e === "laya" ? 0 : S[e].avgTout })), v => v.toFixed(0)),
+    barChart("Cost per 1,000 messages", "USD at list price · Jev $0.042/1M input · gpt-4.1-mini $0.40/$1.60 per 1M", engs.map(e => ({ e, v: e === "laya" ? 0 : S[e].per1k, extra: e === "laya" ? "self-hosted: you pay for the machine" : `${money(S[e].per1k * 1000)} per 1M messages` })), v => money(v)),
+    (() => {
+      const box = el("div", { class: "chart" }, el("h3", { text: "How often engines agree" }), el("div", { class: "cap", text: "same answer on the same question (score rounded to a level, yes/no at 50%)" }));
+      for (const p of agreementPairs()) {
+        const v = p.n ? p.same / p.n : null;
+        const r = el("div", { class: "hbar" }, el("span", { style: { fontSize: "12px" }, text: `${ENGINES[p.a].name}·${ENGINES[p.b].name}` }));
+        if (v == null) r.append(el("span", { class: "na", text: "no data" }), el("span"));
+        else r.append(el("div", { class: "track" }, el("div", { class: "fill", style: { width: `${Math.max(1, v * 100)}%`, background: "var(--muted)" } })),
+          el("span", { class: "val", text: `${Math.round(v * 100)}% (${p.same}/${p.n})` }));
+        box.append(r);
+      }
+      return box;
+    })()));
+
+  // table view (same numbers, for reading exactly)
+  const t = el("table", { class: "data" }, el("tr", {}, ...["Engine", "Calls", "Errors", "Median ms", "p95 ms", "Tokens in", "Tokens out", "Total cost", "Cost / 1K msgs", "Cost / 1M msgs"].map(h => el("th", { text: h }))));
+  for (const e of engs) {
+    const s = S[e];
+    t.append(el("tr", {}, el("td", { text: ENGINES[e].name }),
+      ...[s.calls, s.errors, s.p50 == null ? "—" : Math.round(s.p50), s.p95 == null ? "—" : Math.round(s.p95), s.tin, e === "laya" ? 0 : s.tout,
+        e === "laya" ? "$0" : money(s.cost), e === "laya" ? "$0" : money(s.per1k),
+        e === "laya" ? "$0" : (s.per1k == null ? "—" : money(s.per1k * 1000))].map(v => el("td", { class: "num", text: String(v) }))));
+  }
+  d.append(el("div", { class: "table-wrap" }, t));
+
+  // per-message log
+  const log = el("table", { class: "data" }, el("tr", {}, ...["Time", "Chat", "Message", ...engs.map(e => ENGINES[e].name)].map(h => el("th", { text: h }))));
+  for (const r of runs.slice().reverse().slice(0, 100)) {
+    log.append(el("tr", {}, el("td", { text: new Date(r.at).toLocaleTimeString() }), el("td", { text: r.chat }), el("td", { text: r.text.slice(0, 70) }),
+      ...engs.map(e => {
+        const x = r.results[e];
+        if (!x) return el("td", { text: "—" });
+        if (x.err) return el("td", { text: "error" });
+        const ans = Object.entries(x.ans).map(([k, v]) => `${TYPE_INFO[r.types[k]].name}=${v === true ? "yes" : v === false ? "no" : v}`).join(", ");
+        return el("td", { text: `${ans} · ${Math.round(x.ms)} ms${x.cold ? " (load)" : ""}` });
+      })));
+  }
+  d.append(el("details", { class: "box" }, el("summary", { text: "Every message (latest 100)" }), el("div", { class: "table-wrap" }, log)));
+}
+function confirmClear() { return window.confirm("Delete all comparison data in this browser?"); }
+function exportCsv() {
+  const rows = [["time", "chat", "message", "engine", "model", "ms", "tokens_in", "tokens_out", "cost_usd", "error", "answers"]];
+  for (const r of runs) for (const [e, x] of Object.entries(r.results))
+    rows.push([new Date(r.at).toISOString(), r.chat, r.text, e, x.model || "", Math.round(x.ms), x.tin, x.tout, x.cost, x.err, JSON.stringify(x.ans)]);
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+  const a = el("a", { href: URL.createObjectURL(new Blob([csv], { type: "text/csv" })), download: "laya-jev-azure-comparison.csv" });
+  document.body.append(a); a.click(); a.remove();
+}
+
+// ======================================================================= sidebar / top controls
+function scenRow(s) {
+  const row = el("div", { class: "scen" + (s === scenario ? " on" : "") },
+    el("button", { class: "pick", onclick: () => selectScenario(s) }, s.name,
+      el("small", { text: isCustom(s) ? (TYPES.filter(t => s[t]).map(t => TYPE_INFO[t].name).join(" · ") || "no questions yet") : s.desc })));
+  if (isCustom(s)) row.append(el("button", { class: "del", title: "Delete this chat", text: "✕", onclick: () => deleteChat(s) }));
+  return row;
+}
 function renderScenarios() {
-  const box = $("scenarios");
-  box.replaceChildren();
-  SCENARIOS.forEach(s => box.append(el("button", { class: s.id === scenario.id ? "on" : "", onclick: () => selectScenario(s) },
-    s.name, el("small", { text: s.desc }))));
+  $("scenarios").replaceChildren(...SCENARIOS.map(scenRow));
+  $("myChats").replaceChildren(...(custom.length ? custom.map(scenRow) : [el("div", { class: "empty-note", text: "Click ＋ New chat to set up your own questions." })]));
 }
-function selectScenario(s) {
-  scenario = s;
-  $("model").value = s.model;
-  renderScenarios(); renderExplain(); renderTopline(); welcome();
-  store.set("last", { scenario: s.id, qtype });
+function renderTopline() {
+  const edited = !isCustom(scenario) && !!overrides[scenario.id];
+  $("scenName").replaceChildren(document.createTextNode(scenario.name));
+  if (edited) $("scenName").append(el("span", { class: "edited", text: "edited" }));
 }
-function selectType(t) {
-  qtype = t;
-  document.querySelectorAll("#types button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
-  renderExplain();
-  store.set("last", { scenario: scenario.id, qtype });
+function renderTypes() {
+  const on = enabledTypes();
+  document.querySelectorAll("#types button").forEach(b => {
+    const t = b.dataset.t;
+    b.disabled = t === "all" ? on.length < 2 : !on.includes(t);
+    b.title = b.disabled ? (t === "all" ? "Turn on at least 2 question types to ask them together" : "Turned off for this chat. Turn it on in ✎ Edit questions") : "";
+    b.classList.toggle("on", t === qtype);
+  });
+}
+function fixType() {
+  const on = enabledTypes();
+  if (qtype === "all" ? on.length < 2 : !on.includes(qtype)) qtype = on[0] || "choice";
+}
+function renderEngines() {
+  $("engines").replaceChildren(...Object.entries(ENGINES).map(([e, m]) => {
+    const b = el("button", { class: "eng-chip" + (engineOn[e] && engineAvail[e] ? " on" : "") },
+      el("span", { class: "sw", style: { background: engineOn[e] && engineAvail[e] ? m.color : "var(--track)" } }), m.name);
+    b.disabled = !engineAvail[e];
+    b.title = engineAvail[e] ? `${m.sub}: click to turn ${engineOn[e] ? "off" : "on"}` : `${m.name} is not configured on the server (.env)`;
+    b.onclick = () => { engineOn[e] = !engineOn[e]; store.set("engines", engineOn); renderEngines(); };
+    return b;
+  }));
 }
 function renderExplain() {
-  const info = TYPE_INFO[qtype];
   const box = $("explain");
-  box.replaceChildren(el("span", { html: info.long }));
-  if (qtype !== "all") box.append(el("br"), el("span", { class: "q", text: "Laya will answer: “" + cfg(qtype).q + "”" }));
+  if (view === "dash") { box.replaceChildren(); return; }
+  box.replaceChildren(el("span", { html: TYPE_INFO[qtype].long }));
+  const c = qtype !== "all" && cfg(qtype);
+  if (c) box.append(el("br"), el("span", { class: "q", text: "Asking: “" + c.q + "”" }));
+}
+function refreshAll() { fixType(); renderScenarios(); renderTopline(); renderTypes(); renderExplain(); }
+function selectScenario(s) {
+  scenario = s;
+  if (s.model) $("model").value = s.model;
+  refreshAll(); setView("chat"); welcome();
+  store.set("last", { scenario: s.id, qtype });
+}
+function selectType(t) { qtype = t; renderTypes(); renderExplain(); store.set("last", { scenario: scenario.id, qtype }); }
+function setView(v) {
+  view = v;
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  $("chatView").hidden = v !== "chat"; $("composer").hidden = v !== "chat";
+  $("dashView").hidden = v !== "dash"; $("chatControls").hidden = v !== "chat"; $("editBtn").hidden = v !== "chat";
+  renderExplain();
+  if (v === "dash") renderDashboard();
+}
+
+// ======================================================================= new / delete chat
+const TEMPLATES = {
+  choice: () => ({ q: "", opts: [["", ""], ["", ""], ["other", "anything else"]] }),
+  score: () => ({ q: "", levels: ["low", "medium", "high"] }),
+  noul: () => ({ q: "", t: "", f: "" }),
+};
+function newChat() {
+  const n = custom.length + 1;
+  const s = { id: "c" + Date.now(), custom: true, name: `My chat ${n}`, desc: "Your own questions", model: "auto", context: "",
+    choice: TEMPLATES.choice(), score: null, noul: null, examples: [] };
+  custom.unshift(s); store.set("custom", custom);
+  qtype = "choice";
+  selectScenario(s);
+  openDrawer();
+}
+function deleteChat(s) {
+  if (!window.confirm(`Delete "${s.name}"?`)) return;
+  custom = custom.filter(c => c !== s); store.set("custom", custom);
+  selectScenario(scenario === s ? SCENARIOS[0] : scenario);
 }
 
 // ======================================================================= edit drawer
-// The drawer edits a working copy of the scenario (draft) and writes it to `overrides` on every change.
-let draft = null;
-let savedTimer = null;
-
-function isEdited() { return !!overrides[scenario.id]; }
-function renderTopline() {
-  $("scenName").replaceChildren(document.createTextNode(scenario.name));
-  if (isEdited()) $("scenName").append(el("span", { class: "edited", text: "edited" }));
-}
+let draft = null, savedTimer = null;
 function openDrawer() {
-  draft = { context: ctx(), choice: clone(cfg("choice")), score: clone(cfg("score")), noul: clone(cfg("noul")) };
+  draft = { name: scenario.name, context: ctx(), choice: clone(cfg("choice")), score: clone(cfg("score")), noul: clone(cfg("noul")) };
   $("drawerTitle").textContent = "Edit: " + scenario.name;
+  $("resetBtn").textContent = isCustom(scenario) ? "🗑 Delete this chat" : "↺ Reset to default";
   $("savedNote").textContent = "";
   renderDrawer();
   $("drawer").classList.add("open"); $("scrim").classList.add("open");
-  const first = document.querySelector(".sec.active input"); if (first) first.focus();
+  const first = document.querySelector(".sec.active input[type=text]"); if (first) first.focus();
 }
 function closeDrawer() { $("drawer").classList.remove("open"); $("scrim").classList.remove("open"); $("input").focus(); }
-
 function commit() {
-  overrides[scenario.id] = clone(draft);
-  store.set("overrides", overrides);
-  renderExplain(); renderTopline(); renderWarnings();
+  if (isCustom(scenario)) {
+    Object.assign(scenario, { name: draft.name.trim() || "Untitled chat", context: draft.context, choice: clone(draft.choice), score: clone(draft.score), noul: clone(draft.noul) });
+    store.set("custom", custom);
+    $("drawerTitle").textContent = "Edit: " + scenario.name;
+  } else {
+    overrides[scenario.id] = { context: draft.context, choice: clone(draft.choice), score: clone(draft.score), noul: clone(draft.noul) };
+    store.set("overrides", overrides);
+  }
+  refreshAll(); renderWarnings();
   $("savedNote").textContent = "✓ saved";
   clearTimeout(savedTimer); savedTimer = setTimeout(() => { $("savedNote").textContent = ""; }, 1200);
 }
@@ -492,81 +872,66 @@ function textInput(value, placeholder, onInput) {
   i.addEventListener("input", () => { onInput(i.value); commit(); });
   return i;
 }
-function section(type, what, ...body) {
-  const active = qtype === type || qtype === "all";
-  return el("div", { class: "sec" + (active ? " active" : "") },
-    el("div", { class: "sec-head" }, el("span", { class: `pill p-${type}`, text: TYPE_INFO[type].name }), el("span", { class: "what", text: what })),
-    ...body);
+function section(type, what, bodyFn) {
+  const on = !!draft[type];
+  const active = on && (qtype === type || qtype === "all");
+  const sw = el("input", { type: "checkbox" }); sw.checked = on;
+  sw.onchange = () => {
+    // turning on: a built-in scenario gets its default question back; a custom chat gets an empty template
+    draft[type] = sw.checked ? (!isCustom(scenario) && scenario[type] ? clone(scenario[type]) : TEMPLATES[type]()) : null;
+    if (sw.checked) qtype = type;
+    commit(); renderDrawer();
+  };
+  const sec = el("div", { class: "sec" + (active ? " active" : "") + (on ? "" : " off") },
+    el("div", { class: "sec-head" }, el("span", { class: `pill p-${type}`, text: TYPE_INFO[type].name }), el("span", { class: "what", text: what }),
+      el("label", { class: "switch" }, sw, on ? "On" : "Off")));
+  if (on) sec.append(el("div", { class: "sec-body" }, ...bodyFn(draft[type])), el("div", { class: "warn", id: "warn-" + type }));
+  return sec;
 }
-
 function renderDrawer() {
   const body = $("drawerBody");
   body.replaceChildren();
-
-  // bot's previous line
+  if (isCustom(scenario)) body.append(el("div", { class: "sec" }, el("label", { class: "fl", style: { marginTop: 0 }, text: "Chat name" }),
+    textInput(draft.name, "e.g. Refund bot checks", v => { draft.name = v; })));
   body.append(el("div", { class: "sec" },
-    el("label", { class: "fl", text: "Bot's previous line (optional)" }),
+    el("label", { class: "fl", style: { marginTop: 0 }, text: "Bot's previous line (optional)" }),
     textInput(draft.context, "e.g. Shall I book it for Thursday? (leave empty for none)", v => { draft.context = v; }),
-    el("div", { class: "tip", text: "Sent together with your message, so Laya knows what the user is replying to." })));
+    el("div", { class: "hint", text: "Sent together with your message, so the engines know what the user is replying to." })));
 
-  // choice
-  const ch = draft.choice;
-  const optBox = el("div");
-  ch.opts.forEach((o, i) => optBox.append(el("div", { class: "opt-row" },
-    textInput(o[0], "option name", v => { o[0] = v.trim(); }),
-    textInput(o[1], "what it means", v => { o[1] = v; }),
-    el("button", { class: "rm", title: "Remove", text: "✕", onclick: () => { ch.opts.splice(i, 1); commit(); renderDrawer(); } }))));
-  body.append(section("choice", "Laya picks ONE of these options",
-    el("label", { class: "fl", text: "Question" }),
-    textInput(ch.q, "e.g. Which department should handle this?", v => { ch.q = v; }),
-    el("label", { class: "fl", text: "Options" }), optBox,
-    el("button", { class: "add", text: "+ Add option", onclick: () => { ch.opts.push(["", ""]); commit(); renderDrawer(); focusLast(".opt-row"); } }),
-    el("div", { class: "warn", id: "warn-choice" }),
-    el("div", { class: "tip", text: "Describe every option. Add an 'other' or 'unclear' option so Laya isn't forced to guess. Avoid yes/no as option names." })));
-
-  // score
-  const sc = draft.score;
-  const lvlBox = el("div");
-  sc.levels.forEach((lv, i) => lvlBox.append(el("div", { class: "lvl-row" },
-    el("span", { class: "n", text: String(i) }),
-    textInput(lv, "level description", v => { sc.levels[i] = v; }),
-    el("button", { class: "rm", title: "Remove", text: "✕", onclick: () => { sc.levels.splice(i, 1); commit(); renderDrawer(); } }))));
-  body.append(section("score", "Laya places the message on this scale",
-    el("label", { class: "fl", text: "Question" }),
-    textInput(sc.q, "e.g. How urgent is this?", v => { sc.q = v; }),
-    el("label", { class: "fl", text: "Levels: lowest first (0 = lowest)" }), lvlBox,
-    el("button", { class: "add", text: "+ Add level", onclick: () => { sc.levels.push(""); commit(); renderDrawer(); focusLast(".lvl-row"); } }),
-    el("div", { class: "warn", id: "warn-score" })));
-
-  // yes / no
-  const yn = draft.noul;
-  body.append(section("noul", "Laya answers YES or NO, with a probability",
-    el("label", { class: "fl", text: "Question (ask it so YES / NO makes sense)" }),
-    textInput(yn.q, "e.g. Does the customer want to cancel?", v => { yn.q = v; }),
+  body.append(section("choice", "pick ONE option", ch => {
+    const optBox = el("div");
+    ch.opts.forEach((o, i) => optBox.append(el("div", { class: "opt-row" },
+      textInput(o[0], "option name", v => { o[0] = v.trim(); }), textInput(o[1], "what it means", v => { o[1] = v; }),
+      el("button", { class: "rm", title: "Remove", text: "✕", onclick: () => { ch.opts.splice(i, 1); commit(); renderDrawer(); } }))));
+    return [el("label", { class: "fl", text: "Question" }), textInput(ch.q, "e.g. Which department should handle this?", v => { ch.q = v; }),
+      el("label", { class: "fl", text: "Options" }), optBox,
+      el("button", { class: "add", text: "+ Add option", onclick: () => { ch.opts.push(["", ""]); commit(); renderDrawer(); focusLast(".opt-row"); } }),
+      el("div", { class: "hint", text: "Describe every option and keep an 'other' option. Avoid yes/no as option names." })];
+  }));
+  body.append(section("score", "place it on a scale", sc => {
+    const lvlBox = el("div");
+    sc.levels.forEach((lv, i) => lvlBox.append(el("div", { class: "lvl-row" }, el("span", { class: "n", text: String(i) }),
+      textInput(lv, "level description", v => { sc.levels[i] = v; }),
+      el("button", { class: "rm", title: "Remove", text: "✕", onclick: () => { sc.levels.splice(i, 1); commit(); renderDrawer(); } }))));
+    return [el("label", { class: "fl", text: "Question" }), textInput(sc.q, "e.g. How urgent is this?", v => { sc.q = v; }),
+      el("label", { class: "fl", text: "Levels: lowest first (2 to 10)" }), lvlBox,
+      el("button", { class: "add", text: "+ Add level", onclick: () => { sc.levels.push(""); commit(); renderDrawer(); focusLast(".lvl-row"); } })];
+  }));
+  body.append(section("noul", "YES or NO with a probability", yn => [
+    el("label", { class: "fl", text: "Question (ask it so YES / NO makes sense)" }), textInput(yn.q, "e.g. Does the customer want to cancel?", v => { yn.q = v; }),
     el("label", { class: "fl", text: "What YES and NO mean (optional)" }),
     el("div", { class: "yn-row" }, el("span", { class: "yes", text: "YES =" }), textInput(yn.t, "e.g. says they will cancel or leave", v => { yn.t = v; })),
     el("div", { class: "yn-row" }, el("span", { class: "no", text: "NO =" }), textInput(yn.f, "e.g. just a question, no threat to leave", v => { yn.f = v; })),
-    el("div", { class: "tip", text: "Filling these in can help or hurt. Try with and without, and keep whichever gives better answers." }),
-    el("div", { class: "warn", id: "warn-noul" })));
+    el("div", { class: "hint", text: "Filling these in can help or hurt. Try with and without." })]));
   renderWarnings();
 }
 function focusLast(sel) { const rows = document.querySelectorAll(sel); const r = rows[rows.length - 1]; if (r) r.querySelector("input").focus(); }
-
-function problems(type, c) {
-  if (!c.q.trim()) return "The question is empty.";
-  if (type === "choice") {
-    const keys = c.opts.map(o => o[0].trim()).filter(Boolean);
-    if (keys.length < 2) return "Add at least 2 options with a name.";
-    if (new Set(keys).size !== keys.length) return "Two options have the same name.";
-  }
-  if (type === "score" && c.levels.filter(l => l.trim()).length < 2) return "Add at least 2 levels.";
-  return "";
-}
 function renderWarnings() {
-  if (!draft || !$("warn-choice")) return;
-  for (const t of ["choice", "score", "noul"]) $("warn-" + t).textContent = problems(t, draft[t]);
+  if (!draft) return;
+  for (const t of TYPES) { const w = $("warn-" + t); if (w) w.textContent = problems(t, draft[t]); }
 }
 
+// ======================================================================= server
 async function checkHealth() {
   const s = $("status");
   try {
@@ -578,6 +943,14 @@ async function checkHealth() {
     s.textContent = "server offline: run playground\\server.py";
   }
 }
+async function loadEngines() {
+  try {
+    const d = await (await fetch(apiBase() + "/api/engines")).json();
+    engineAvail = { laya: true, jev: !!d.jev, azure: !!d.azure };
+    if (d.azure_deployment) ENGINES.azure.sub = "Azure " + d.azure_deployment;
+  } catch { /* server offline: keep defaults */ }
+  renderEngines();
+}
 function autosize() { const i = $("input"); i.style.height = "auto"; i.style.height = Math.min(i.scrollHeight, 160) + "px"; }
 
 // ======================================================================= init
@@ -585,35 +958,33 @@ function autosize() { const i = $("input"); i.style.height = "auto"; i.style.hei
   $("apiUrl").value = store.get("api") || (location.protocol.startsWith("http") ? location.origin : "http://127.0.0.1:8765");
   if (location.protocol.startsWith("http")) $("advLink").href = "/";
   const last = store.get("last") || {};
-  scenario = SCENARIOS.find(s => s.id === last.scenario) || SCENARIOS[0];
+  scenario = SCENARIOS.concat(custom).find(s => s.id === last.scenario) || SCENARIOS[0];
   qtype = last.qtype || "choice";
-  renderScenarios();
-  $("model").value = scenario.model;
-  selectType(qtype);
-  welcome();
+  if (scenario.model) $("model").value = scenario.model;
+  refreshAll(); renderEngines(); welcome();
 
-  document.querySelectorAll("#types button").forEach(b => b.onclick = () => selectType(b.dataset.t));
+  document.querySelectorAll("#types button").forEach(b => b.onclick = () => { if (!b.disabled) selectType(b.dataset.t); });
+  document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => setView(b.dataset.v));
+  $("newChat").onclick = newChat;
   $("send").onclick = send;
   $("input").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } });
   $("input").addEventListener("input", autosize);
   $("editBtn").onclick = openDrawer;
-  $("closeDrawer").onclick = closeDrawer;
-  $("doneBtn").onclick = closeDrawer;
-  $("scrim").onclick = closeDrawer;
+  $("closeDrawer").onclick = closeDrawer; $("doneBtn").onclick = closeDrawer; $("scrim").onclick = closeDrawer;
   document.addEventListener("keydown", e => { if (e.key === "Escape" && $("drawer").classList.contains("open")) closeDrawer(); });
   $("resetBtn").onclick = () => {
+    if (isCustom(scenario)) { closeDrawer(); deleteChat(scenario); return; }
     delete overrides[scenario.id]; store.set("overrides", overrides);
-    renderExplain(); renderTopline(); openDrawer(); $("savedNote").textContent = "↺ back to default";
+    refreshAll(); openDrawer(); $("savedNote").textContent = "↺ back to default";
   };
-  renderTopline();
-  $("apiUrl").addEventListener("change", () => { store.set("api", $("apiUrl").value); checkHealth(); });
+  $("apiUrl").addEventListener("change", () => { store.set("api", $("apiUrl").value); checkHealth(); loadEngines(); });
   $("themeBtn").onclick = () => {
     const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     document.documentElement.dataset.theme = cur === "dark" ? "light" : "dark";
     store.set("theme", document.documentElement.dataset.theme);
   };
   const th = store.get("theme"); if (th) document.documentElement.dataset.theme = th;
-  checkHealth();
+  checkHealth(); loadEngines();
   $("input").focus();
 })();
 </script>

@@ -27,7 +27,11 @@ from fastapi import Body, Depends, FastAPI, Header, HTTPException  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware              # noqa: E402
 from fastapi.responses import FileResponse                      # noqa: E402
 
-from shared import get_router                                   # noqa: E402
+from shared import get_router, load_env                         # noqa: E402
+
+load_env()   # repo .env (JEV_API_KEY, AZURE_OPENAI_*) - server-side only, never sent to the browser
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import engines                                                  # noqa: E402
 
 HERE = pathlib.Path(__file__).resolve().parent
 MODELS = {"english", "multilingual", "typed-decisions"}
@@ -118,6 +122,46 @@ def predict(body: dict = Body(...)):
     result["timing"] = {"server_ms": elapsed,
                         "cold_load": result["routing"]["model"] not in loaded_before}
     return result
+
+
+@app.get("/api/engines")
+def engine_list():
+    return engines.available()
+
+
+def _run_laya(state, questions, model, max_len):
+    t0 = time.perf_counter()
+    router = get_router()
+    loaded_before = set(router.loaded)
+    try:
+        r = router.predict(state, questions, model=model, max_len=max_len)
+    except ValueError as e:
+        return {"engine": "laya", "answers": {}, "latency_ms": (time.perf_counter() - t0) * 1000,
+                "tokens_in": 0, "tokens_out": 0, "cost_usd": 0.0, "error": str(e), "model": None}
+    return {"engine": "laya", "model": f"laya-{r['routing']['model']}", "answers": r["answers"],
+            "latency_ms": (time.perf_counter() - t0) * 1000,
+            "tokens_in": r.get("usage", {}).get("input_tokens", 0), "tokens_out": 0, "cost_usd": 0.0,
+            "error": None, "cold_load": r["routing"]["model"] not in loaded_before}
+
+
+@app.post("/api/compare", dependencies=[Depends(require_key)])
+def compare(body: dict = Body(...)):
+    """Send the same state + questions to every selected engine in parallel."""
+    from concurrent.futures import ThreadPoolExecutor
+    _check_size(body)
+    state, questions = body.get("state"), body.get("questions")
+    if state in (None, "", [], {}):
+        raise HTTPException(422, "state is empty - type a user query first")
+    if not isinstance(questions, dict) or not questions:
+        raise HTTPException(422, "add at least one question")
+    wanted = [e for e in (body.get("engines") or ["laya", "jev", "azure"]) if e in ("laya", "jev", "azure")]
+    model = _model(body.get("model"))
+    jobs = {"laya": lambda: _run_laya(state, questions, model, None),
+            "jev": lambda: engines.run_jev(state, questions),
+            "azure": lambda: engines.run_azure(state, questions)}
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        futures = {e: pool.submit(jobs[e]) for e in wanted}
+        return {"results": {e: f.result() for e, f in futures.items()}}
 
 
 def main():

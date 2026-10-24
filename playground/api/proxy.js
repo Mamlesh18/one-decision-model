@@ -3,7 +3,7 @@
 //   LAYA_BACKEND_URL      e.g. https://your-name-laya-playground.hf.space
 //   LAYA_PLAYGROUND_KEY   same value as on the backend
 // Locally, server.py serves /api itself; this file is only used on Vercel.
-const ALLOWED = new Set(["health", "route", "predict"]);
+const ALLOWED = new Set(["health", "route", "predict", "compare", "engines"]);
 
 module.exports = async (req, res) => {
   const path = [].concat(req.query.path || []).join("/");

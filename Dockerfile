@@ -26,7 +26,9 @@ RUN python -c "from huggingface_hub import snapshot_download; \
 snapshot_download('convaiinnovations/laya', ignore_patterns=['typed-decisions/*'])"
 
 COPY shared.py .
-COPY playground/server.py playground/index.html playground/chat.html playground/
+COPY playground/server.py playground/engines.py playground/index.html playground/chat.html playground/
+# Comparison engines are optional: set JEV_API_KEY and AZURE_OPENAI_ENDPOINT / _API_KEY / _DEPLOYMENT
+# as secrets on the host. Without them the chat page greys those engines out and Laya still works.
 
 # Hugging Face Spaces runs the container as uid 1000
 RUN useradd -m -u 1000 app && chown -R app /app
